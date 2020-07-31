@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Homepage</title>
+  <script type="text/javascript" src="elm.js"></script>
+</head>
+
+<body>
+  <div id="website"></div>
+</body>
+
+<script type="text/javascript">
+// Load the Elm app, passing in the initial viewport size
+var app = Elm.Main.init({
+	node: document.getElementById('website'),
+	flags: {
+		width: window.innerWidth,
+		height: window.innerHeight
+	}
+});
+console.log('width: ' + window.innerWidth + ' height: ' + window.innerHeight);
+</script>
+
+</html>
