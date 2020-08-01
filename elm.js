@@ -11997,15 +11997,15 @@ var $mdgriffith$elm_ui$Element$image = F2(
 	});
 var $author$project$Homepage$assetsDark = _List_fromArray(
 	[
-		_Utils_Tuple2('/images/github.svg', 'https://github.com/kientuong114'),
-		_Utils_Tuple2('/images/twitter.svg', 'https://twitter.com/kientuong114'),
-		_Utils_Tuple2('/images/linkedin.svg', 'https://www.linkedin.com/in/kien-tuong-t-430306102/')
+		_Utils_Tuple2('images/github.svg', 'https://github.com/kientuong114'),
+		_Utils_Tuple2('images/twitter.svg', 'https://twitter.com/kientuong114'),
+		_Utils_Tuple2('images/linkedin.svg', 'https://www.linkedin.com/in/kien-tuong-t-430306102/')
 	]);
 var $author$project$Homepage$assetsLight = _List_fromArray(
 	[
-		_Utils_Tuple2('/images/github_light.svg', 'https://github.com/kientuong114'),
-		_Utils_Tuple2('/images/twitter_light.svg', 'https://twitter.com/kientuong114'),
-		_Utils_Tuple2('/images/linkedin_light.svg', 'https://www.linkedin.com/in/kien-tuong-t-430306102/')
+		_Utils_Tuple2('images/github_light.svg', 'https://github.com/kientuong114'),
+		_Utils_Tuple2('images/twitter_light.svg', 'https://twitter.com/kientuong114'),
+		_Utils_Tuple2('images/linkedin_light.svg', 'https://www.linkedin.com/in/kien-tuong-t-430306102/')
 	]);
 var $author$project$Homepage$getAssets = function (mode) {
 	if (mode.$ === 'Dark') {
