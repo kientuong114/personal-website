@@ -104,16 +104,16 @@ helloText mode =
 
 
 assetsDark =
-    [ ( "/images/github.svg", "https://github.com/kientuong114" )
-    , ( "/images/twitter.svg", "https://twitter.com/kientuong114" )
-    , ( "/images/linkedin.svg", "https://www.linkedin.com/in/kien-tuong-t-430306102/" )
+    [ ( "images/github.svg", "https://github.com/kientuong114" )
+    , ( "images/twitter.svg", "https://twitter.com/kientuong114" )
+    , ( "images/linkedin.svg", "https://www.linkedin.com/in/kien-tuong-t-430306102/" )
     ]
 
 
 assetsLight =
-    [ ( "/images/github_light.svg", "https://github.com/kientuong114" )
-    , ( "/images/twitter_light.svg", "https://twitter.com/kientuong114" )
-    , ( "/images/linkedin_light.svg", "https://www.linkedin.com/in/kien-tuong-t-430306102/" )
+    [ ( "images/github_light.svg", "https://github.com/kientuong114" )
+    , ( "images/twitter_light.svg", "https://twitter.com/kientuong114" )
+    , ( "images/linkedin_light.svg", "https://www.linkedin.com/in/kien-tuong-t-430306102/" )
     ]
 
 
