@@ -9,7 +9,11 @@ type Mode
 
 
 gray =
-    rgb255 50 50 50
+    rgb255 70 70 70
+
+
+darkGray =
+    rgb255 40 40 40
 
 
 lightGray =
@@ -31,14 +35,14 @@ getForeground mode =
             white
 
         Light ->
-            gray
+            lightGray
 
 
 getBackground : Mode -> Element.Color
 getBackground mode =
     case mode of
         Dark ->
-            gray
+            darkGray
 
         Light ->
             white
@@ -51,14 +55,14 @@ getForegroundHighlight mode =
             white
 
         Light ->
-            black
+            gray
 
 
 getShadow : Mode -> Element.Color
 getShadow mode =
     case mode of
         Dark ->
-            rgba255 0 0 0 0.4
+            rgba255 0 0 0 0.0
 
         Light ->
             rgba255 255 255 255 0.4
