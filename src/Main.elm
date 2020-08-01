@@ -135,10 +135,10 @@ pageView mode w h =
 getModeAsset mode =
     case mode of
         Colors.Dark ->
-            "/images/day-and-night.svg"
+            "images/day-and-night.svg"
 
         Colors.Light ->
-            "/images/day-and-night_light.svg"
+            "images/day-and-night_light.svg"
 
 
 header : Colors.Mode -> Element Msg

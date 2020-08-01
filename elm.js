@@ -11228,9 +11228,9 @@ var $mdgriffith$elm_ui$Element$el = F2(
 	});
 var $author$project$Main$getModeAsset = function (mode) {
 	if (mode.$ === 'Dark') {
-		return '/images/day-and-night.svg';
+		return 'images/day-and-night.svg';
 	} else {
-		return '/images/day-and-night_light.svg';
+		return 'images/day-and-night_light.svg';
 	}
 };
 var $elm$html$Html$Attributes$height = function (n) {
