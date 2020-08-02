@@ -11,7 +11,7 @@ My personal website, written in Elm.
 
 ## Build
 
-1. [https://guide.elm-lang.org/install/elm.html](Install Elm)
+1. [Install Elm] (https://guide.elm-lang.org/install/elm.html)
 2. Clone this repository and move to the root directory
 ```
 git clone https://github.com/kientuong114/personal-website.git && cd personal-website
