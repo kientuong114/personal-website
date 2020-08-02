@@ -5220,7 +5220,7 @@ var $author$project$Main$init = function (flags) {
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$json$Json$Decode$int = _Json_decodeInt;
-var $author$project$Main$Resize = F3(
+var $author$project$Common$Resize = F3(
 	function (a, b, c) {
 		return {$: 'Resize', a: a, b: b, c: c};
 	});
@@ -5643,7 +5643,7 @@ var $author$project$Main$subscriptions = function (model) {
 		F2(
 			function (width, height) {
 				return A3(
-					$author$project$Main$Resize,
+					$author$project$Common$Resize,
 					width,
 					height,
 					$mdgriffith$elm_ui$Element$classifyDevice(
@@ -5745,7 +5745,7 @@ var $mdgriffith$elm_ui$Internal$Model$AlignY = function (a) {
 };
 var $mdgriffith$elm_ui$Internal$Model$CenterY = {$: 'CenterY'};
 var $mdgriffith$elm_ui$Element$centerY = $mdgriffith$elm_ui$Internal$Model$AlignY($mdgriffith$elm_ui$Internal$Model$CenterY);
-var $author$project$Main$ChangeColorMode = function (a) {
+var $author$project$Common$ChangeColorMode = function (a) {
 	return {$: 'ChangeColorMode', a: a};
 };
 var $mdgriffith$elm_ui$Internal$Model$Left = {$: 'Left'};
@@ -11226,13 +11226,6 @@ var $mdgriffith$elm_ui$Element$el = F2(
 				_List_fromArray(
 					[child])));
 	});
-var $author$project$Main$getModeAsset = function (mode) {
-	if (mode.$ === 'Dark') {
-		return 'images/day-and-night.svg';
-	} else {
-		return 'images/day-and-night_light.svg';
-	}
-};
 var $elm$html$Html$Attributes$height = function (n) {
 	return A2(
 		_VirtualDom_attribute,
@@ -11252,11 +11245,18 @@ var $mdgriffith$elm_ui$Internal$Model$unstyled = A2($elm$core$Basics$composeL, $
 var $mdgriffith$elm_ui$Element$html = $mdgriffith$elm_ui$Internal$Model$unstyled;
 var $elm$html$Html$img = _VirtualDom_node('img');
 var $author$project$Colors$Light = {$: 'Light'};
-var $author$project$Main$invertColorMode = function (mode) {
+var $author$project$Colors$invertColorMode = function (mode) {
 	if (mode.$ === 'Dark') {
 		return $author$project$Colors$Light;
 	} else {
 		return $author$project$Colors$Dark;
+	}
+};
+var $author$project$Assets$modeAsset = function (mode) {
+	if (mode.$ === 'Dark') {
+		return 'images/day-and-night.svg';
+	} else {
+		return 'images/day-and-night_light.svg';
 	}
 };
 var $mdgriffith$elm_ui$Internal$Model$Attr = function (a) {
@@ -11298,7 +11298,7 @@ var $elm$html$Html$Attributes$width = function (n) {
 		'width',
 		$elm$core$String$fromInt(n));
 };
-var $author$project$Main$changeModeButton = function (mode) {
+var $author$project$Common$changeModeButton = function (mode) {
 	return A2(
 		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
@@ -11306,8 +11306,8 @@ var $author$project$Main$changeModeButton = function (mode) {
 				$mdgriffith$elm_ui$Element$alignLeft,
 				$mdgriffith$elm_ui$Element$pointer,
 				$mdgriffith$elm_ui$Element$Events$onClick(
-				$author$project$Main$ChangeColorMode(
-					$author$project$Main$invertColorMode(mode))),
+				$author$project$Common$ChangeColorMode(
+					$author$project$Colors$invertColorMode(mode))),
 				$mdgriffith$elm_ui$Element$centerY
 			]),
 		$mdgriffith$elm_ui$Element$html(
@@ -11316,7 +11316,7 @@ var $author$project$Main$changeModeButton = function (mode) {
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$src(
-						$author$project$Main$getModeAsset(mode)),
+						$author$project$Assets$modeAsset(mode)),
 						$elm$html$Html$Attributes$width(50),
 						$elm$html$Html$Attributes$height(50)
 					]),
@@ -11392,7 +11392,7 @@ var $mdgriffith$elm_ui$Internal$Model$Typeface = function (a) {
 	return {$: 'Typeface', a: a};
 };
 var $mdgriffith$elm_ui$Element$Font$typeface = $mdgriffith$elm_ui$Internal$Model$Typeface;
-var $author$project$Homepage$contentFont = $mdgriffith$elm_ui$Element$Font$family(
+var $author$project$Common$contentFont = $mdgriffith$elm_ui$Element$Font$family(
 	_List_fromArray(
 		[
 			$mdgriffith$elm_ui$Element$Font$typeface('Raleway'),
@@ -11474,7 +11474,7 @@ var $mdgriffith$elm_ui$Internal$Model$Text = function (a) {
 var $mdgriffith$elm_ui$Element$text = function (content) {
 	return $mdgriffith$elm_ui$Internal$Model$Text(content);
 };
-var $author$project$Main$header = function (mode) {
+var $author$project$Common$header = function (mode) {
 	return A2(
 		$mdgriffith$elm_ui$Element$row,
 		_List_fromArray(
@@ -11484,12 +11484,12 @@ var $author$project$Main$header = function (mode) {
 				$mdgriffith$elm_ui$Element$px(75)),
 				$mdgriffith$elm_ui$Element$Background$color(
 				$author$project$Colors$getBackground(mode)),
-				$author$project$Homepage$contentFont,
+				$author$project$Common$contentFont,
 				A2($mdgriffith$elm_ui$Element$paddingXY, 100, 0)
 			]),
 		_List_fromArray(
 			[
-				$author$project$Main$changeModeButton(mode),
+				$author$project$Common$changeModeButton(mode),
 				A2(
 				$mdgriffith$elm_ui$Element$el,
 				_List_fromArray(
@@ -11747,20 +11747,6 @@ var $mdgriffith$elm_ui$Element$column = F2(
 						attrs))),
 			$mdgriffith$elm_ui$Internal$Model$Unkeyed(children));
 	});
-var $author$project$Main$mobilePageView = F2(
-	function (mode, h) {
-		return A2(
-			$mdgriffith$elm_ui$Element$column,
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
-					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
-				]),
-			_List_fromArray(
-				[
-					$mdgriffith$elm_ui$Element$text('Mobile website in construction!')
-				]));
-	});
 var $mdgriffith$elm_ui$Internal$Model$Behind = {$: 'Behind'};
 var $mdgriffith$elm_ui$Element$behindContent = function (element) {
 	return A2($mdgriffith$elm_ui$Element$createNearby, $mdgriffith$elm_ui$Internal$Model$Behind, element);
@@ -11879,7 +11865,7 @@ var $author$project$Homepage$helloText = function (mode) {
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$spacing(20),
-				$author$project$Homepage$contentFont
+				$author$project$Common$contentFont
 			]),
 		_List_fromArray(
 			[
@@ -11995,23 +11981,23 @@ var $mdgriffith$elm_ui$Element$image = F2(
 						$mdgriffith$elm_ui$Internal$Model$Unkeyed(_List_Nil))
 					])));
 	});
-var $author$project$Homepage$assetsDark = _List_fromArray(
+var $author$project$Assets$assetsDark = _List_fromArray(
 	[
 		_Utils_Tuple2('images/github.svg', 'https://github.com/kientuong114'),
 		_Utils_Tuple2('images/twitter.svg', 'https://twitter.com/kientuong114'),
 		_Utils_Tuple2('images/linkedin.svg', 'https://www.linkedin.com/in/kien-tuong-t-430306102/')
 	]);
-var $author$project$Homepage$assetsLight = _List_fromArray(
+var $author$project$Assets$assetsLight = _List_fromArray(
 	[
 		_Utils_Tuple2('images/github_light.svg', 'https://github.com/kientuong114'),
 		_Utils_Tuple2('images/twitter_light.svg', 'https://twitter.com/kientuong114'),
 		_Utils_Tuple2('images/linkedin_light.svg', 'https://www.linkedin.com/in/kien-tuong-t-430306102/')
 	]);
-var $author$project$Homepage$getAssets = function (mode) {
+var $author$project$Assets$socialMediaAssets = function (mode) {
 	if (mode.$ === 'Dark') {
-		return $author$project$Homepage$assetsDark;
+		return $author$project$Assets$assetsDark;
 	} else {
-		return $author$project$Homepage$assetsLight;
+		return $author$project$Assets$assetsLight;
 	}
 };
 var $elm$html$Html$a = _VirtualDom_node('a');
@@ -12021,7 +12007,7 @@ var $elm$html$Html$Attributes$href = function (url) {
 		'href',
 		_VirtualDom_noJavaScriptUri(url));
 };
-var $author$project$Homepage$socialMediaIcon = function (t) {
+var $author$project$Assets$socialMediaIcon = function (t) {
 	return $mdgriffith$elm_ui$Element$html(
 		A2(
 			$elm$html$Html$a,
@@ -12049,7 +12035,7 @@ var $author$project$Homepage$links = function (mode) {
 		_List_fromArray(
 			[
 				$mdgriffith$elm_ui$Element$spacing(50),
-				$author$project$Homepage$contentFont
+				$author$project$Common$contentFont
 			]),
 		_List_fromArray(
 			[
@@ -12069,8 +12055,8 @@ var $author$project$Homepage$links = function (mode) {
 					[$mdgriffith$elm_ui$Element$spaceEvenly]),
 				A2(
 					$elm$core$List$map,
-					$author$project$Homepage$socialMediaIcon,
-					$author$project$Homepage$getAssets(mode)))
+					$author$project$Assets$socialMediaIcon,
+					$author$project$Assets$socialMediaAssets(mode)))
 			]));
 };
 var $mdgriffith$elm_ui$Internal$Model$MoveX = function (a) {
@@ -12249,7 +12235,7 @@ var $mdgriffith$elm_ui$Element$padding = function (x) {
 			f,
 			f));
 };
-var $author$project$Main$footer = function (mode) {
+var $author$project$Common$footer = function (mode) {
 	return A2(
 		$mdgriffith$elm_ui$Element$el,
 		_List_fromArray(
@@ -12268,7 +12254,7 @@ var $author$project$Main$footer = function (mode) {
 					$author$project$Colors$getForegroundHighlight(mode)),
 					$mdgriffith$elm_ui$Element$Font$size(15),
 					$mdgriffith$elm_ui$Element$alignLeft,
-					$author$project$Homepage$contentFont
+					$author$project$Common$contentFont
 				]),
 			_List_fromArray(
 				[
@@ -12319,7 +12305,21 @@ var $author$project$Main$mainContent = F3(
 							$mdgriffith$elm_ui$Element$px(120))
 						]),
 					$mdgriffith$elm_ui$Element$none),
-					$author$project$Main$footer(mode)
+					$author$project$Common$footer(mode)
+				]));
+	});
+var $author$project$Main$mobilePageView = F3(
+	function (mode, w, h) {
+		return A2(
+			$mdgriffith$elm_ui$Element$column,
+			_List_fromArray(
+				[
+					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+				]),
+			_List_fromArray(
+				[
+					A3($author$project$Main$mainContent, mode, w, h)
 				]));
 	});
 var $author$project$Main$pageView = F3(
@@ -12346,9 +12346,11 @@ var $author$project$Main$view = function (model) {
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$inFront(
-					$author$project$Main$header(model.mode))
+					$author$project$Common$header(model.mode)),
+					$mdgriffith$elm_ui$Element$Background$color(
+					$author$project$Colors$getBackground(model.mode))
 				]),
-			A2($author$project$Main$mobilePageView, model.mode, model.size.b));
+			A3($author$project$Main$mobilePageView, model.mode, model.size.a, model.size.b));
 	} else {
 		return A2(
 			$mdgriffith$elm_ui$Element$layout,
@@ -12357,7 +12359,7 @@ var $author$project$Main$view = function (model) {
 					$mdgriffith$elm_ui$Element$height($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill),
 					$mdgriffith$elm_ui$Element$inFront(
-					$author$project$Main$header(model.mode)),
+					$author$project$Common$header(model.mode)),
 					$mdgriffith$elm_ui$Element$Background$color(
 					$author$project$Colors$getBackground(model.mode))
 				]),

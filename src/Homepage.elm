@@ -1,6 +1,8 @@
 module Homepage exposing (..)
 
+import Assets
 import Colors
+import Common
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
@@ -15,13 +17,6 @@ edges =
     , bottom = 0
     , left = 0
     }
-
-
-contentFont =
-    Font.family
-        [ Font.typeface "Raleway"
-        , Font.sansSerif
-        ]
 
 
 content : Colors.Mode -> Int -> Element msg
@@ -79,7 +74,7 @@ helloText : Colors.Mode -> Element msg
 helloText mode =
     Element.textColumn
         [ spacing 20
-        , contentFont
+        , Common.contentFont
         ]
         [ el [ Font.size 75, Font.bold, Font.color (Colors.getForegroundHighlight mode) ]
             (text "Hi! :)")
@@ -103,47 +98,11 @@ helloText mode =
         ]
 
 
-assetsDark =
-    [ ( "images/github.svg", "https://github.com/kientuong114" )
-    , ( "images/twitter.svg", "https://twitter.com/kientuong114" )
-    , ( "images/linkedin.svg", "https://www.linkedin.com/in/kien-tuong-t-430306102/" )
-    ]
-
-
-assetsLight =
-    [ ( "images/github_light.svg", "https://github.com/kientuong114" )
-    , ( "images/twitter_light.svg", "https://twitter.com/kientuong114" )
-    , ( "images/linkedin_light.svg", "https://www.linkedin.com/in/kien-tuong-t-430306102/" )
-    ]
-
-
-getAssets mode =
-    case mode of
-        Colors.Dark ->
-            assetsDark
-
-        Colors.Light ->
-            assetsLight
-
-
-socialMediaIcon : ( String, String ) -> Element msg
-socialMediaIcon t =
-    Element.html <|
-        Html.a [ HtmlAttr.href <| Tuple.second t ]
-            [ Html.img
-                [ HtmlAttr.src <| Tuple.first t
-                , HtmlAttr.width 50
-                , HtmlAttr.height 50
-                ]
-                []
-            ]
-
-
 links : Colors.Mode -> Element msg
 links mode =
     Element.textColumn
         [ spacing 50
-        , contentFont
+        , Common.contentFont
         ]
         [ Element.el
             [ Font.bold
@@ -154,5 +113,5 @@ links mode =
         , Element.row
             [ Element.spaceEvenly ]
           <|
-            List.map socialMediaIcon (getAssets mode)
+            List.map Assets.socialMediaIcon (Assets.socialMediaAssets mode)
         ]

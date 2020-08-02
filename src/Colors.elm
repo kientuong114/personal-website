@@ -1,4 +1,4 @@
-module Colors exposing (Mode(..), getBackground, getForeground, getForegroundHighlight, getShadow)
+module Colors exposing (Mode(..), getBackground, getForeground, getForegroundHighlight, getShadow, invertColorMode)
 
 import Element exposing (..)
 
@@ -26,6 +26,16 @@ black =
 
 white =
     rgb255 255 255 255
+
+
+invertColorMode : Mode -> Mode
+invertColorMode mode =
+    case mode of
+        Dark ->
+            Light
+
+        Light ->
+            Dark
 
 
 getForeground : Mode -> Element.Color
