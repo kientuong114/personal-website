@@ -12235,6 +12235,22 @@ var $mdgriffith$elm_ui$Element$padding = function (x) {
 			f,
 			f));
 };
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $mdgriffith$elm_ui$Element$toRgb = function (_v0) {
+	var r = _v0.a;
+	var g = _v0.b;
+	var b = _v0.c;
+	var a = _v0.d;
+	return {alpha: a, blue: b, green: g, red: r};
+};
+var $author$project$Colors$toRgbString = function (color) {
+	var rgbColor = $mdgriffith$elm_ui$Element$toRgb(color);
+	return 'rgb(' + ($elm$core$String$fromInt(
+		$elm$core$Basics$round(rgbColor.red) * 255) + (',' + ($elm$core$String$fromInt(
+		$elm$core$Basics$round(rgbColor.green) * 255) + (',' + ($elm$core$String$fromInt(
+		$elm$core$Basics$round(rgbColor.blue) * 255) + ')')))));
+};
 var $author$project$Common$footer = function (mode) {
 	return A2(
 		$mdgriffith$elm_ui$Element$el,
@@ -12262,10 +12278,22 @@ var $author$project$Common$footer = function (mode) {
 					$mdgriffith$elm_ui$Element$el,
 					_List_Nil,
 					$mdgriffith$elm_ui$Element$text('© 2019-2020 Kien Tuong Truong - Website built in Elm ')),
+					$mdgriffith$elm_ui$Element$html(
 					A2(
-					$mdgriffith$elm_ui$Element$el,
-					_List_Nil,
-					$mdgriffith$elm_ui$Element$text('(Source code here)'))
+						$elm$html$Html$a,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$href('https://github.com/kientuong114/personal-website'),
+								A2(
+								$elm$html$Html$Attributes$style,
+								'color',
+								$author$project$Colors$toRgbString(
+									$author$project$Colors$getForeground(mode)))
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text('(Source code)')
+							])))
 				])));
 };
 var $mdgriffith$elm_ui$Element$scrollbarY = A2($mdgriffith$elm_ui$Internal$Model$Class, $mdgriffith$elm_ui$Internal$Flag$overflow, $mdgriffith$elm_ui$Internal$Style$classes.scrollbarsY);

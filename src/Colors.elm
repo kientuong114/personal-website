@@ -1,4 +1,4 @@
-module Colors exposing (Mode(..), getBackground, getForeground, getForegroundHighlight, getShadow, invertColorMode)
+module Colors exposing (Mode(..), getBackground, getForeground, getForegroundHighlight, getShadow, invertColorMode, toRgbString)
 
 import Element exposing (..)
 
@@ -26,6 +26,20 @@ black =
 
 white =
     rgb255 255 255 255
+
+
+toRgbString color =
+    let
+        rgbColor =
+            toRgb color
+    in
+    "rgb("
+        ++ String.fromInt (round rgbColor.red * 255)
+        ++ ","
+        ++ String.fromInt (round rgbColor.green * 255)
+        ++ ","
+        ++ String.fromInt (round rgbColor.blue * 255)
+        ++ ")"
 
 
 invertColorMode : Mode -> Mode

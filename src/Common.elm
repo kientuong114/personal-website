@@ -73,5 +73,10 @@ footer mode =
             ]
             [ Element.el []
                 (text "© 2019-2020 Kien Tuong Truong - Website built in Elm ")
-            , Element.el [] <| text "(Source code here)"
+            , Element.html <|
+                Html.a
+                    [ HtmlAttr.href "https://github.com/kientuong114/personal-website"
+                    , HtmlAttr.style "color" (Colors.toRgbString <| Colors.getForeground mode)
+                    ]
+                    [ Html.text "(Source code)" ]
             ]
