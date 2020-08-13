@@ -22,7 +22,9 @@ edges =
 content : Colors.Mode -> Int -> Element msg
 content mode width =
     Element.column
-        [ Element.centerX ]
+        [ Element.centerX
+        , Element.width fill
+        ]
         [ Element.row
             [ Element.width fill
             , Element.paddingEach

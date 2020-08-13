@@ -12141,7 +12141,10 @@ var $author$project$Homepage$content = F2(
 		return A2(
 			$mdgriffith$elm_ui$Element$column,
 			_List_fromArray(
-				[$mdgriffith$elm_ui$Element$centerX]),
+				[
+					$mdgriffith$elm_ui$Element$centerX,
+					$mdgriffith$elm_ui$Element$width($mdgriffith$elm_ui$Element$fill)
+				]),
 			_List_fromArray(
 				[
 					A2(
