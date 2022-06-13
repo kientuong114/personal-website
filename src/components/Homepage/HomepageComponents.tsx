@@ -2,8 +2,8 @@ import styled from "styled-components";
 
 export const HomepageWrapper = styled.div`
     display: grid;
-    padding-left: 7rem;
-    padding-right: 7rem;
+    margin-left: 7rem;
+    margin-right: 7rem;
     grid-column-gap: 5rem;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: fit-content(1rem);
@@ -12,7 +12,8 @@ export const HomepageWrapper = styled.div`
         grid-template-columns: 1fr;
         grid-template-rows: 1fr fit-content(1em);
         grid-row-gap: 5rem;
-        justify-items: center;
+        margin-left: 2rem;
+        margin-right: 2rem;
     }
 `;
 
@@ -39,6 +40,9 @@ export const HomepageImageWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    max-width: 100%;
+
 `;
 
 export const HomepageImageContent = styled.img`
@@ -47,6 +51,11 @@ export const HomepageImageContent = styled.img`
     border-radius: 50%;
     border: solid 5px #fff;
     z-index: 2;
+
+    @media only screen and (max-width: 1200px) {
+        width: 12rem;
+        height: 12rem;
+    }
 `
 
 export const HomepageImageDeco = styled.div`
@@ -59,6 +68,11 @@ export const HomepageImageDeco = styled.div`
     border-radius: 50%;
     border: dotted 3px #fff;
     z-index: 1;
+
+    @media only screen and (max-width: 1200px) {
+        width: 12rem;
+        height: 12rem;
+    }
 `
 
 export const FooterWrapper = styled.div`
@@ -73,6 +87,8 @@ export const FooterWrapper = styled.div`
 export const FooterTitle = styled.h1`
     font-family: 'Raleway';
     color: #fff;
+    text-align: center;
+    margin-bottom: 3rem;
 `;
 
 export const FooterButtonWrapper = styled.div`

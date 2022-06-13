@@ -39,7 +39,7 @@ const FooterButton: FC<{href: string, icon: JSX.Element}> = ({href, icon}) => {
 }
 
 const iconProps = {
-    size: 70,
+    size: 50,
     color: "white",
 }
 
@@ -67,7 +67,8 @@ export const HomepageContent: FC = () => {
                     Hi! :)
                 </HomepageTextTitle>
                 <HomepageTextP>
-                    I'm <b>Kien Tuong Truong</b>, a CyberSecurity MSc. student at ETH Zürich with too many projects on my bucket list. This obviously implies that I barely manage to finish any of them.<br/>
+                    I'm <b>Kien Tuong Truong</b>, a CyberSecurity MSc. student at ETH Zürich with too many projects on my bucket list and too little time to finish any of them.
+                    <br/>
                     <br/>
                     I'm passionate about cybersecurity, especially cryptography!<br/>
                     <b>I often play CTFs</b> (Capture the Flag competitions) with various teams. In the past I've played with Tower of Hanoi, Mhackeroni, Flagbot and 0rganizers.<br/>

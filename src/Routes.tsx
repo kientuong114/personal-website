@@ -1,8 +1,8 @@
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import {
     Routes as Switch,
     Route,
-    BrowserRouter
+    useLocation
 } from 'react-router-dom';
 
 import {
@@ -13,16 +13,32 @@ import {
 } from './views';
 
 export const Routes: FC = () => {
-    return (
-        <BrowserRouter>
-            <Switch>
-                <Route path="/" element={<Homepage/>}/>
-                <Route path="/pubkey" element={<Pubkey/>}/>
-                <Route path="/blog" element={<Blog/>}/>
-                <Route path="/cv" element={<Curriculum/>}/>
+    const location = useLocation();
+    const [displayLocation, setDisplayLocation] = useState(location);
+    const [transitionStage, setTransitionStage] = useState("fadeIn");
 
-                <Route path="*" element={<Homepage/>}/>
-            </Switch>
-        </BrowserRouter>
+    useEffect(() => {
+        if (location !== displayLocation) setTransitionStage("fadeOut");
+    }, [location, displayLocation]);
+    
+    return (
+        <div
+            className={`${transitionStage}`}
+            onAnimationEnd={() => {
+                if (transitionStage === "fadeOut") {
+                    setTransitionStage("fadeIn");
+                    setDisplayLocation(location);
+                }
+            }}
+        >
+                <Switch location={displayLocation}>
+                    <Route path="/" element={<Homepage/>}/>
+                    <Route path="/pubkey" element={<Pubkey/>}/>
+                    <Route path="/blog" element={<Blog/>}/>
+                    <Route path="/cv" element={<Curriculum/>}/>
+
+                    <Route path="*" element={<Homepage/>}/>
+                </Switch>
+        </div>
     )
 }
