@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const NavbarWrapper = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     padding-top: 2rem;
     padding-left: 20vw;
     padding-right: 20vw;
@@ -11,6 +11,13 @@ export const NavbarWrapper = styled.div`
 `;
 
 export const NavEntry = styled(NavLink)`
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Raleway';
+`;
+
+export const NavEntryExt = styled.a`
     text-align: center;
     text-decoration: none;
     color: #fff;
@@ -30,6 +37,7 @@ export const OpenSidebar = styled.div<{isOpen: boolean}>`
     position: fixed;
     width: 100%;
     height: 100%;
+    z-index: 2;
     transition: all 0.2s ease-in-out;
 `;
 
@@ -43,6 +51,15 @@ export const HamburgerMenuWrapper = styled.div`
 `
 
 export const SidebarEntry = styled(NavLink)`
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Raleway';
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+`
+
+export const SidebarEntryExt = styled.a`
     text-align: center;
     text-decoration: none;
     color: #fff;

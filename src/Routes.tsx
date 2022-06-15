@@ -11,6 +11,7 @@ import {
     Homepage,
     Pubkey,
 } from './views';
+import { NavbarOrSidebar } from "./components/Navbar";
 
 export const Routes: FC = () => {
     const location = useLocation();
@@ -18,10 +19,12 @@ export const Routes: FC = () => {
     const [transitionStage, setTransitionStage] = useState("fadeIn");
 
     useEffect(() => {
-        if (location !== displayLocation) setTransitionStage("fadeOut");
+        if (location.pathname !== displayLocation.pathname) setTransitionStage("fadeOut");
     }, [location, displayLocation]);
     
     return (
+        <>
+        <NavbarOrSidebar/>
         <div
             className={`${transitionStage}`}
             onAnimationEnd={() => {
@@ -40,5 +43,6 @@ export const Routes: FC = () => {
                     <Route path="*" element={<Homepage/>}/>
                 </Switch>
         </div>
+        </>
     )
 }

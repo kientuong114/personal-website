@@ -3,13 +3,16 @@ import useWindowDimensions from "../Utils/WindowSize";
 import {
     NavbarWrapper,
     NavEntry,
+    NavEntryExt,
     SidebarWrapper,
     OpenSidebar,
     CloseButtonWrapper,
     HamburgerMenuWrapper,
     SidebarEntryWrapper,
     SidebarEntry,
+    SidebarEntryExt,
 } from './NavbarComponents';
+import { DOMAIN } from '../../config/config';
 
 import {GiHamburgerMenu} from 'react-icons/gi';
 import {MdOutlineClose} from 'react-icons/md';
@@ -35,14 +38,14 @@ export const Navbar: FC = () => {
                 Homepage
             </NavEntry>
             <NavEntry to={"/pubkey"}>
-                My Public Keys
+                Public Keys
             </NavEntry>
-            {/* <NavEntry to={"/blog"}> */}
-            {/*     Blog */}
-            {/* </NavEntry> */}
-            {/* <NavEntry to={"/cv"}> */}
-            {/*     My CV */}
-            {/* </NavEntry> */}
+            <NavEntry to={"/cv"}>
+                Curriculum
+            </NavEntry>
+            <NavEntryExt href={`https://blog.${DOMAIN}`}>
+                Blog
+            </NavEntryExt>
         </NavbarWrapper>
     )
 
@@ -65,8 +68,18 @@ export const Sidebar: FC<{isOpen: boolean, toggle: () => void}> = ({isOpen, togg
                 </SidebarEntryWrapper>
                 <SidebarEntryWrapper>
                     <SidebarEntry to={"/pubkey"} onClick={toggle}>
-                        My Public Keys
+                        Public Keys
                     </SidebarEntry>
+                </SidebarEntryWrapper>
+                <SidebarEntryWrapper>
+                    <SidebarEntry to={"/cv"} onClick={toggle}>
+                        Curriculum
+                    </SidebarEntry>
+                </SidebarEntryWrapper>
+                <SidebarEntryWrapper>
+                    <SidebarEntryExt href={`https://blog.${DOMAIN}`} onClick={toggle}>
+                        Blog
+                    </SidebarEntryExt>
                 </SidebarEntryWrapper>
             </OpenSidebar>
         </SidebarWrapper>

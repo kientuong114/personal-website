@@ -60,8 +60,8 @@ export const HomepageImageContent = styled.img`
 
 export const HomepageImageDeco = styled.div`
     position: relative;
-    left: -7rem;
-    margin-right: -7rem;
+    left: -9rem;
+    margin-right: -9rem;
     content: '';
     width: 18rem;
     height: 18rem;

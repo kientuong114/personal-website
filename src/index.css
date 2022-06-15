@@ -13,6 +13,10 @@ code {
     monospace;
 }
 
+.active {
+    font-weight: 700;
+}
+
 .fadeIn {
   animation: 0.1s fadeIn forwards;
 }

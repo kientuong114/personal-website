@@ -6,7 +6,6 @@ import { NavbarOrSidebar } from "../components/Navbar";
 export const Pubkey: FC = () => {
     return (
         <>
-            <NavbarOrSidebar/>
             <PubkeyContent/>
         </>
     )
