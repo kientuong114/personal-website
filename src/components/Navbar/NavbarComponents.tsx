@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const NavbarWrapper = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     padding-top: 2rem;
     padding-left: 20vw;
     padding-right: 20vw;

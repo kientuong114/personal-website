@@ -40,9 +40,9 @@ export const Navbar: FC = () => {
             <NavEntry to={"/pubkey"}>
                 Public Keys
             </NavEntry>
-            <NavEntry to={"/cv"}>
-                Curriculum
-            </NavEntry>
+            {/* <NavEntry to={"/cv"}> */}
+            {/*     Curriculum */}
+            {/* </NavEntry> */}
             <NavEntryExt href={`https://blog.${DOMAIN}`}>
                 Blog
             </NavEntryExt>

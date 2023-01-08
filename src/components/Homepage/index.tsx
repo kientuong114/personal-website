@@ -67,7 +67,7 @@ export const HomepageContent: FC = () => {
                     Hi! :)
                 </HomepageTextTitle>
                 <HomepageTextP>
-                    I'm <b>Kien Tuong Truong</b>, a CyberSecurity MSc. student at ETH Zürich with too many projects on my bucket list and too little time to finish any of them.
+                    I'm <b>Kien Tuong Truong</b>, a PhD student at <a href="https://ethz.ch/en.html">ETH Zürich</a> (with the <a href="https://appliedcrypto.ethz.ch/">Applied Cryptography group</a>) with too many projects on my bucket list and too little time to finish any of them.
                     <br/>
                     <br/>
                     I'm passionate about cybersecurity, especially cryptography!<br/>
