@@ -71,11 +71,11 @@ export const Sidebar: FC<{isOpen: boolean, toggle: () => void}> = ({isOpen, togg
                         Public Keys
                     </SidebarEntry>
                 </SidebarEntryWrapper>
-                <SidebarEntryWrapper>
-                    <SidebarEntry to={"/cv"} onClick={toggle}>
-                        Curriculum
-                    </SidebarEntry>
-                </SidebarEntryWrapper>
+                {/* <SidebarEntryWrapper> */}
+                {/*     <SidebarEntry to={"/cv"} onClick={toggle}> */}
+                {/*         Curriculum */}
+                {/*     </SidebarEntry> */}
+                {/* </SidebarEntryWrapper> */}
                 <SidebarEntryWrapper>
                     <SidebarEntryExt href={`https://blog.${DOMAIN}`} onClick={toggle}>
                         Blog

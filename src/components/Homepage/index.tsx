@@ -12,6 +12,11 @@ import {
     FooterTitle,
     FooterButtonWrapper,
     FooterButtonLink,
+    PublicationsWrapper,
+    PublicationsTitle,
+    PublicationName,
+    PublicationVenue,
+    PublicationAuthors,
 } from "./HomepageComponents";
 
 import {
@@ -67,20 +72,23 @@ export const HomepageContent: FC = () => {
                     Hi! :)
                 </HomepageTextTitle>
                 <HomepageTextP>
-                    I'm <b>Kien Tuong Truong</b>, a PhD student at <a href="https://ethz.ch/en.html">ETH Zürich</a> (with the <a href="https://appliedcrypto.ethz.ch/">Applied Cryptography group</a>) with too many projects on my bucket list and too little time to finish any of them.
+                    I'm <b>Kien Tuong Truong</b>, a second-year PhD student at <a href="https://ethz.ch/en.html">ETH Zürich</a> (with the <a href="https://appliedcrypto.ethz.ch/">Applied Cryptography group</a>) with an interest in the real-world deployments of cryptography. In particular, I like to analyse cryptographic protocols "in the wild", with a focus on finding attacks and/or proving the security of these protocols. My current focus is on secure messaging and E2EE cloud storage.
                     <br/>
                     <br/>
-                    I'm passionate about cybersecurity, especially cryptography!<br/>
-                    <b>I often play CTFs</b> (Capture the Flag competitions) with various teams. In the past I've played with Tower of Hanoi, Mhackeroni, Flagbot and 0rganizers.<br/>
-                    <br/>
-                    I'm also a musician/singer: in the future you might find a new section with some music here (I have a band called <b>Eigen</b>)
-                    <br/>
+                    <b>I (used to) play CTFs</b> with various teams. In the past I've played with Tower of Hanoi, Mhackeroni, Flagbot and 0rganizers.<br/>
                     <br/>
                     <i>Over-engineering solutions for the sake of elegance since 1998</i>
                 </HomepageTextP>
             </HomepageText>
             <HomepageImage src={profileimg}/>
         </HomepageWrapper>
+        <PublicationsTitle>Publications</PublicationsTitle>
+        <PublicationsWrapper>
+            <PublicationName href="https://www.usenix.org/conference/usenixsecurity23/presentation/paterson">Three Lessons from Threema: Analysis of a Secure Messenger</PublicationName>
+            <PublicationVenue>USENIX Security 2023</PublicationVenue>
+            <PublicationAuthors><i>Kenny Paterson, Matteo Scarlata, </i><b>Kien Tuong Truong</b></PublicationAuthors>
+
+        </PublicationsWrapper>
         <HomepageFooter/>
         </>
     )

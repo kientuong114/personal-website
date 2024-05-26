@@ -89,6 +89,8 @@ export const FooterTitle = styled.h1`
     color: #fff;
     text-align: center;
     margin-bottom: 3rem;
+    font-size: 1.5rem;
+    text-decoration: underline;
 `;
 
 export const FooterButtonWrapper = styled.div`
@@ -100,3 +102,39 @@ export const FooterButtonWrapper = styled.div`
 
 export const FooterButtonLink = styled.a`
 `;
+
+export const PublicationsWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 5px;
+`
+
+export const PublicationsTitle = styled.h1`
+    font-family: 'Raleway';
+    font-size: 1.5rem;
+    color: #fff;
+    text-align: center;
+    margin-top: 4rem;
+    text-decoration: underline;
+`
+
+export const PublicationName = styled.a`
+    font-family: 'Raleway';
+    font-size: 1.3rem;
+    color: #fff;
+    text-align: center;
+`
+
+export const PublicationVenue = styled.i`
+    font-family: 'Raleway';
+    color: #aaa;
+    font-size: 1.2rem;
+`
+
+export const PublicationAuthors = styled.div`
+    font-family: 'Raleway';
+    color: #fff;
+    font-size: 1.2rem;
+    text-align: center;
+`
