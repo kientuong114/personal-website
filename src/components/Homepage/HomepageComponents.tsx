@@ -108,6 +108,7 @@ export const PublicationsWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     row-gap: 5px;
+    margin-bottom: 3rem;
 `
 
 export const PublicationsTitle = styled.h1`
