@@ -109,10 +109,19 @@ export const HomepageContent: FC = () => {
             <PublicationVenue>Real World Crypto 2025</PublicationVenue>
         </PublicationsWrapper>
         <PublicationsWrapper>
+            <PublicationName>If It Ain't Not Broken, Do Fix It!</PublicationName>
+            <PublicationVenue><a href="https://media.ccc.de/v/camp2023-57170-if_it_ain_t_broken_do_fix_it">Chaos Communication Camp 2023</a></PublicationVenue>
+        </PublicationsWrapper>
+        <PublicationsWrapper>
             <PublicationName>Three Lessons from Threema: Analysis of a Secure Messenger</PublicationName>
             <PublicationVenue><a href="https://www.youtube.com/watch?v=BeECKejKQF0">USENIX Security 2023</a>, <a href="https://youtu.be/sthXs4zJ5XU?list=PLeeS-3Ml-rpo-pbh8LIhb8VscM_q5OaSE&t=1904">Real World Crypto 2023</a>, ZISC Seminar Series @ ETH Zurich</PublicationVenue>
         </PublicationsWrapper>
 
+        <PublicationsTitle>Workshops and Tutorials</PublicationsTitle>
+        <PublicationsWrapper>
+            <PublicationName>Cryptographic Vulnerabilities and How To Find Them</PublicationName>
+            <PublicationVenue><a href="https://summerschool-croatia.cs.ru.nl/2024/tutorials.html">Summer School on Real-World Crypto and Privacy (Vodice, Croatia)</a></PublicationVenue>
+        </PublicationsWrapper>
 
         <HomepageFooter/>
         </>
