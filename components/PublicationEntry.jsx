@@ -6,7 +6,7 @@ export default function PublicationEntry({ authors, title, venue, links, childre
   const [showAbstract, setShowAbstract] = useState(false);
 
   return (
-    <div className="w-full mb-8">
+      <div className="w-full mb-8 overflow-hidden">
     <p className="font-light text-sm md:text-md mb-2 md:mb-0">
         {authors}
       </p>
@@ -36,7 +36,7 @@ export default function PublicationEntry({ authors, title, venue, links, childre
           showAbstract ? "opacity-100 mt-4" : "max-h-0 opacity-0 pointer-events-none"
         }`}
       >
-        <div className="p-16 bg-white/20 rounded">
+    <div className="p-4 md:p-16 bg-white/20 rounded">
             <div className={`flex flex-col gap-4 font-light italic transition-all duration-10 ${showAbstract ? "" : "opacity-0"}`}>
             {children}
           </div>

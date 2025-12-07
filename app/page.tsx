@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-start p-4 md:p-8 min-h-screen">
       {/* Hero Card*/}
-      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 w-full max-w-6xl backdrop-blur-xl backdrop-brightness-103 border-solid border-2 border-t-white border-l-white border-b-white/10 border-r-transparent px-4 m-4 py-8 md:p-16 md:m-8">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-12 w-full max-w-6xl backdrop-blur-md md:backdrop-blur-xl backdrop-brightness-103 border-solid border-2 border-t-white border-l-white border-b-white/10 border-r-transparent px-4 m-4 py-8 md:p-16 md:m-8">
         {/* Name - appears below on mobile, left on desktop */}
         <div className="order-2 md:order-1 text-center md:text-left max-w-lg">
           <p className={subheadingClasses}>

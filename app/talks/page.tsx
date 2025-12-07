@@ -20,7 +20,7 @@ export default function Talks() {
           description={""}
         />
         <TalksEntry 
-          title="If It Ain't Not Broken, Do Fix It!"
+          title="If It Ain't Broken, Do Fix It!"
           venue="Chaos Communication Camp 2023"
           links={[
             { url: "https://media.ccc.de/v/camp2023-57170-if_it_ain_t_broken_do_fix_it", label: "CCC" }
