@@ -7,7 +7,7 @@ export default function Publications() {
     <div className="flex flex-col items-center justify-start p-4 md:p-8 min-h-screen">
 
       {/* Publications Card*/}
-      <div className="flex flex-col items-start justify-center gap-8 md:gap-12 w-full max-w-6xl backdrop-blur-xl backdrop-brightness-103 border-solid border-2 border-t-white border-l-white border-b-white/10 border-r-transparent p-8 md:p-16 m-8 transition-all">
+      <div className="flex flex-col items-start justify-center gap-8 md:gap-12 w-full max-w-6xl backdrop-blur-md md:backdrop-blur-xl backdrop-brightness-103 border-solid border-2 border-t-white border-l-white border-b-white/10 border-r-transparent p-8 md:p-16 m-8 transition-all">
         <h1 className="text-4xl md:text-4xl text-left text-black drop-shadow-2xl font-signika font-medium mb-[.5em]">
           Publications
         </h1>

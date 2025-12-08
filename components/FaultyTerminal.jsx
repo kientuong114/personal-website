@@ -332,14 +332,56 @@ export default function FaultyTerminal({
 
     const mesh = new Mesh(gl, { geometry, program });
 
+    // Choose resolution based on viewport size to optimize performance
+    function getOptimalResolution(width, height) {
+      const maxDimension = Math.max(width, height);
+
+      // Mobile - use smaller resolution
+      if (maxDimension <= 768) {
+        return { width: 1280, height: 720 }; // 720p
+      }
+      // Tablet/Small Desktop
+      else if (maxDimension <= 1366) {
+        return { width: 1920, height: 1080 }; // 1080p
+      }
+      // Large Desktop
+      else {
+        return { width: 2560, height: 1440 }; // 1440p
+      }
+    }
+
+    let currentResolution = null;
+
     function resize() {
       if (!ctn || !renderer) return;
-      renderer.setSize(ctn.offsetWidth, ctn.offsetHeight);
-      program.uniforms.iResolution.value = new Color(
-        gl.canvas.width,
-        gl.canvas.height,
-        gl.canvas.width / gl.canvas.height,
-      );
+
+      const viewportWidth = ctn.offsetWidth;
+      const viewportHeight = ctn.offsetHeight;
+
+      // Determine optimal resolution for current viewport
+      const optimalRes = getOptimalResolution(viewportWidth, viewportHeight);
+
+      // Only re-render canvas if resolution tier changed (to avoid unnecessary re-renders)
+      if (!currentResolution ||
+          currentResolution.width !== optimalRes.width ||
+          currentResolution.height !== optimalRes.height) {
+
+        currentResolution = optimalRes;
+        renderer.setSize(optimalRes.width, optimalRes.height);
+        program.uniforms.iResolution.value = new Color(
+          gl.canvas.width,
+          gl.canvas.height,
+          gl.canvas.width / gl.canvas.height,
+        );
+      }
+
+      // Scale canvas via CSS to cover viewport
+      const scaleX = viewportWidth / currentResolution.width;
+      const scaleY = viewportHeight / currentResolution.height;
+      const scale = Math.max(scaleX, scaleY) * 1.2; // 20% extra for safety
+
+      gl.canvas.style.width = `${currentResolution.width * scale}px`;
+      gl.canvas.style.height = `${currentResolution.height * scale}px`;
     }
 
     const resizeObserver = new ResizeObserver(() => resize());

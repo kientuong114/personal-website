@@ -17,6 +17,10 @@ export default function PublicKeyBox({ title, keyContent, fingerprint }) {
 
   return (
       <div className="w-full border-2 border-white/30 rounded-lg p-2 md:p-6 bg-white/70">
+      {/* Screen reader announcement for copy status */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {copied ? `${title} copied to clipboard` : ""}
+      </div>
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-xl font-signika font-medium text-black mb-1">
@@ -35,6 +39,7 @@ export default function PublicKeyBox({ title, keyContent, fingerprint }) {
               ? "bg-green-500 text-white"
               : "bg-black/10 hover:bg-black/20 text-black"
           }`}
+          aria-label={copied ? `${title} copied to clipboard` : `Copy ${title} to clipboard`}
         >
           {copied ? "Copied!" : "Copy"}
         </button>

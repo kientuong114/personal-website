@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import FaultyTerminalWrapper from "@/components/FaultyTerminalWrapper";
+import { AnimationProvider } from "@/components/AnimationContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,14 +31,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TooltipProvider>
-          {/* Background Terminal - Fixed across all pages */}
-          <FaultyTerminalWrapper />
-          <Navbar />
-          <main className="pt-16">
-            {children}
-          </main>
-        </TooltipProvider>
+        <AnimationProvider>
+          <TooltipProvider>
+            {/* Background Terminal - Fixed across all pages */}
+            <FaultyTerminalWrapper />
+            <Navbar />
+            <main className="pt-16">
+              {children}
+            </main>
+          </TooltipProvider>
+        </AnimationProvider>
       </body>
     </html>
   );

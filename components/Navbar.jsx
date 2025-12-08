@@ -3,11 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Toggle } from "@/components/ui/toggle";
+import { Pause, Play } from "lucide-react";
+import { useAnimation } from "@/components/AnimationContext";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { userPaused, setUserPaused } = useAnimation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,9 +68,34 @@ export default function Navbar() {
               <Link
                 href="https://blog.ktruong.dev"
                 className="font-signika font-light text-lg text-black/70 hover:text-black transition-colors"
+                aria-label="Blog (external link)"
               >
                 Blog
               </Link>
+            </div>
+            <div className="flex items-center">
+              <Toggle
+                pressed={userPaused}
+                onPressedChange={setUserPaused}
+                aria-label="Toggle background animation"
+                className="ml-4"
+              >
+                {userPaused ? (
+                  <>
+                    <Play className="h-4 w-4" />
+                    <p className="font-signika font-light text-lg text-black/70">
+                                  Enable background animation
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Pause className="h-4 w-4" />
+                    <p className="font-signika font-light text-lg text-black/70">
+                                  Disable background animation
+                    </p>
+                  </>
+                )}
+              </Toggle>
             </div>
           </div>
         </div>
@@ -92,6 +121,7 @@ export default function Navbar() {
               strokeWidth="2"
               viewBox="0 0 24 24"
               stroke="currentColor"
+              aria-hidden="true"
             >
               {isMobileMenuOpen ? (
                 <path d="M6 18L18 6M6 6l12 12" />
@@ -109,8 +139,11 @@ export default function Navbar() {
           isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         style={{ top: '64px' }}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation menu"
       >
-        <div className="flex flex-col items-start justify-start h-full space-y-8 p-8 pt-12">
+        <nav className="flex flex-col items-start justify-start h-full space-y-8 p-8 pt-12">
           {navItems.map((item) => (
             <Link
               key={item.path}
@@ -129,10 +162,11 @@ export default function Navbar() {
             href="https://blog.ktruong.dev"
             className="font-signika text-3xl text-black/70"
             onClick={closeMobileMenu}
+            aria-label="Blog (external link)"
           >
             Blog
           </a>
-        </div>
+        </nav>
       </div>
     </>
   );

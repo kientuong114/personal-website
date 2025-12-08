@@ -6,7 +6,7 @@ export default function Talks() {
   return (
     <div className="flex flex-col items-center justify-start p-4 md:p-8 min-h-screen">
       {/* Talks Card*/}
-      <div className="flex flex-col items-start justify-center gap-4 md:gap-4 w-full max-w-6xl backdrop-blur-xl backdrop-brightness-103 border-solid border-2 border-t-white border-l-white border-b-white/10 border-r-transparent p-8 md:p-16 m-8">
+      <div className="flex flex-col items-start justify-center gap-4 md:gap-4 w-full max-w-6xl backdrop-blur-md md:backdrop-blur-xl backdrop-brightness-103 border-solid border-2 border-t-white border-l-white border-b-white/10 border-r-transparent p-8 md:p-16 m-8">
         <h1 className="text-4xl md:text-4xl text-left text-black drop-shadow-2xl font-signika font-medium mb-[.5em]">
           Talks
         </h1>
