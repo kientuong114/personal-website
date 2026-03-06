@@ -11,6 +11,13 @@ export default function Talks() {
           Talks
         </h1>
         <TalksEntry 
+          title="Signal Lost (Integrity): The Signal App is More than the Sum of its Protocols"
+          venue="Real World Crypto 2026"
+          links={[
+          ]}
+          description={""}
+        />
+        <TalksEntry 
           title="Breaking and Fixing Content-Defined Chunking"
           venue="ACM CCS 2025, Real World Crypto 2025"
           links={[
