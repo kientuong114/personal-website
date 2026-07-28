@@ -11,9 +11,17 @@ export default function Talks() {
           Talks
         </h1>
         <TalksEntry 
+          title="Message Injection Attacks Against Signal"
+          venue="USENIX Security 2026"
+          links={[
+          ]}
+          description={""}
+        />
+        <TalksEntry 
           title="Signal Lost (Integrity): The Signal App is More than the Sum of its Protocols"
           venue="Real World Crypto 2026"
           links={[
+            { url: "https://www.youtube.com/watch?v=3_ChwTVBExI", label: "RWC Recording" },
           ]}
           description={""}
         />
