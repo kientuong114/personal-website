@@ -53,7 +53,8 @@
   --shell: 68rem;
   --rail: 10rem; /* left margin where section labels hang */
   --prose: 34rem; /* reading measure, kept narrow */
-  --dash: 14px; /* one period of the dashed section rules */
+  --dash: 15px; /* one period of the dashed rules; see --dash-period */
+  --dash-period: 5s; /* one --dash per --dash-period, i.e. 3px/s */
 
   /* Text steps: 60% measures 4.89:1 on the light ground, 70% 6.90:1. Below
      that (45%) is for hairlines and stroke work only, never for type. */
@@ -622,7 +623,7 @@ main {
 .section__rule line {
   stroke: var(--ink-22);
   stroke-width: 1;
-  stroke-dasharray: 6 8; /* one period = var(--dash) */
+  stroke-dasharray: 6 9; /* sums to var(--dash) */
 }
 
 .section__label {
@@ -1065,7 +1066,7 @@ main {
      so slow travel stays crisp — and the dirty rect is one hairline strip, so
      it costs next to nothing. */
   .section__rule line {
-    animation: dash-march 14s linear infinite;
+    animation: dash-march var(--dash-period) linear infinite;
   }
 
   /* Alternate sections march the other way. */

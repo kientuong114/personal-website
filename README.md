@@ -181,6 +181,8 @@ Two corollaries worth remembering:
 - The dashed rules march via `stroke-dashoffset`, not a CSS transform. A
   transform on a promoted layer resamples a fixed texture and made them jitter;
   animating the dash offset re-antialiases the dash ends each frame instead.
+  Speed is set by two custom properties that must stay in step: one `--dash`
+  (15px) per `--dash-period` (5s), i.e. 3px/s.
 - Don't slowly translate a repeating hairline pattern at all. That is what the
   graph-paper grid did, at about 1px/s, and it snapped between device pixels.
   It is static now.
