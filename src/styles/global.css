@@ -610,26 +610,19 @@ main {
   }
 }
 
-/* A window that clips its own contents, so the dashes inside can translate
-   without leaving a gap at either end. */
 .section__rule {
   position: absolute;
   inset-block-start: 0;
   inset-inline: 0;
+  width: 100%;
   height: 1px;
-  overflow: hidden;
   transform-origin: left center;
 }
 
-.section__rule span {
-  position: absolute;
-  /* Overhang on both sides covers the travel. */
-  inset: 0 calc(var(--dash) * -2);
-  background: repeating-linear-gradient(
-    90deg,
-    var(--ink-22) 0 calc(var(--dash) * 0.42),
-    transparent calc(var(--dash) * 0.42) var(--dash)
-  );
+.section__rule line {
+  stroke: var(--ink-22);
+  stroke-width: 1;
+  stroke-dasharray: 6 8; /* one period = var(--dash) */
 }
 
 .section__label {
@@ -991,9 +984,20 @@ main {
 }
 
 /* Exactly one dash period, so the pattern repeats without a visible jump. */
-@keyframes dash-drift {
+@keyframes dash-march {
   to {
-    transform: translateX(var(--dash));
+    stroke-dashoffset: calc(var(--dash) * -1);
+  }
+}
+
+/* Revealed left to right at its true size, rather than scaled up from zero,
+   which would compress the dash pattern while it played. */
+@keyframes rule-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -1046,18 +1050,26 @@ main {
   /* Each section mark turns on its own clock. The transform is on the <svg>
      element itself — a normal CSS box — so it composites; on an inner <g> it
      would repaint every child instead. */
+  /* Deliberately not promoted. A 36px box re-rasterises for about 1,300
+     pixels a frame, which is nothing, and re-rasterising keeps the hairlines
+     crisp — a promoted layer is rasterised once and then resampled by the GPU,
+     which softens thin strokes and makes them shimmer as they turn. */
   .mark {
-    will-change: transform;
     animation: turn var(--period, 24s) linear infinite var(--dir, normal);
   }
 
-  .section__rule span {
-    will-change: transform;
-    animation: dash-drift 14s linear infinite;
+  /* Deliberately a paint animation, not a composited transform. A promoted
+     layer is rasterised once and then resampled by the GPU, which makes a
+     hard-edged 1px pattern shimmer as it creeps along. Re-rasterising instead
+     re-antialiases the dash ends at their true sub-pixel position every frame,
+     so slow travel stays crisp — and the dirty rect is one hairline strip, so
+     it costs next to nothing. */
+  .section__rule line {
+    animation: dash-march 14s linear infinite;
   }
 
-  /* Alternate sections drift the other way. */
-  .section:nth-of-type(even) .section__rule span {
+  /* Alternate sections march the other way. */
+  .section:nth-of-type(even) .section__rule line {
     animation-direction: reverse;
   }
 
@@ -1083,7 +1095,7 @@ main {
 
   @supports (animation-timeline: view()) {
     .section__rule {
-      animation: rule-in linear both;
+      animation: rule-reveal linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 55%;
     }

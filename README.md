@@ -162,19 +162,28 @@ lattice and field are `position: fixed; inset: 0` — full-viewport SVGs. Turnin
 a group inside one of those re-rasters the whole viewport every frame, and that
 is what made it choppy.
 
-So, when adding motion:
+There are two ways to make motion cheap, and which one is right depends on how
+big the moving thing is:
 
-- Animate `transform` or `opacity` on an **outer box** — an HTML element, or the
-  `<svg>` element itself. Those are ordinary CSS boxes and can be promoted to
-  their own layer, after which the GPU just moves an existing texture.
-- Never animate something _inside_ a large SVG. `.mark` rotates the `<svg>`
-  element; the dashed rules translate a `<span>` inside a clipping div. Both are
-  composited.
-- Add `will-change: transform` to the handful of elements that animate
-  continuously, and only those — each one costs GPU memory.
-- Don't translate a hairline pattern slowly. Sub-pixel movement of 1px lines
-  snaps between device pixels and reads as jitter however smooth the frame rate
-  is; that is why the graph-paper grid is static.
+- **Small area → let it re-rasterise.** Under a few tens of thousands of pixels
+  a frame, just animate it and do _not_ promote it. Re-rasterising re-antialiases
+  the shape at its true sub-pixel position every frame, so thin strokes stay
+  crisp. This is what the plot (~113,000 px/frame), the section marks (~1,300)
+  and the dashed rules (~1,400) all do. There is no `will-change` anywhere in
+  this stylesheet, deliberately.
+- **Large area → composite it, or don't animate it.** A promoted layer is
+  rasterised _once_ and then resampled by the GPU. That is cheap to move but it
+  softens the content, and hard-edged 1px lines shimmer as they creep. The
+  background is full-viewport, so it is simply static.
+
+Two corollaries worth remembering:
+
+- The dashed rules march via `stroke-dashoffset`, not a CSS transform. A
+  transform on a promoted layer resamples a fixed texture and made them jitter;
+  animating the dash offset re-antialiases the dash ends each frame instead.
+- Don't slowly translate a repeating hairline pattern at all. That is what the
+  graph-paper grid did, at about 1px/s, and it snapped between device pixels.
+  It is static now.
 
 > **Do not switch CSS minification back to Lightning CSS.** It folds
 > `animation-timeline` into the `animation` shorthand — `animation: linear both

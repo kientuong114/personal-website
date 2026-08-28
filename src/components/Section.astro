@@ -14,8 +14,14 @@ const labelId = id ? `${id}-label` : undefined;
 ---
 
 <section id={id} class="section" aria-labelledby={labelId}>
-  {/* The rule clips its own dashes, so they can drift without gapping. */}
-  <div class="section__rule" aria-hidden="true"><span></span></div>
+  {
+    /* No viewBox: user units are CSS pixels, so the dashes stay the same size
+      at every width. The dash march is a stroke-dashoffset animation rather
+      than a transform — see the note in global.css. */
+  }
+  <svg class="section__rule" aria-hidden="true" focusable="false">
+    <line x1="0" y1="0.5" x2="100%" y2="0.5"></line>
+  </svg>
 
   <div class="section__label">
     <Mark key={id ?? title} seed={SEED} />
