@@ -57,6 +57,44 @@ links:
 ---
 ```
 
+## Adding a service entry
+
+Create `src/content/service/<year>-<slug>.md`. One entry can hold several
+venues, which covers both shapes: a single role at one venue, and a role held
+across a list of them.
+
+```markdown
+---
+role: Co-organizer of the Cryptographic Applications Workshop
+venues:
+  - name: EUROCRYPT
+    year: 2026
+date: 2026-05-04 # sort key only
+links:
+  - label: website
+    url: "https://caw.cryptanalysis.fun/"
+---
+```
+
+A venue takes an optional `url` when the venue itself is the thing worth
+linking to, and renders as a link in place:
+
+```markdown
+---
+role: Sub-reviewer
+venues:
+  - name: ACNS
+    year: 2025
+  - name: EUROCRYPT
+    year: 2025
+  - { name: USENIX Security, year: 2027, url: "https://www.usenix.org/..." }
+date: 2026-05-01
+---
+```
+
+Use `links` for anything that is not a venue — an event website, a report. The
+gutter shows the most recent year across the entry's venues.
+
 ## Editing the prose
 
 | What                           | Where                                                    |

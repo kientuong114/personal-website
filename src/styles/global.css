@@ -781,6 +781,41 @@ main {
   transform-origin: left center;
 }
 
+/* Venue list: like .entry__venue, but each venue can be its own link. */
+.entry__venues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin-top: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+}
+
+.entry__venues li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.entry__venues li + li::before {
+  content: "·";
+  color: var(--ink-45);
+}
+
+.entry__venues a {
+  color: inherit;
+  text-decoration-color: var(--ink-22);
+}
+
+.entry__venues a:hover {
+  text-decoration-color: rgb(var(--ink));
+}
+
 .entry__links {
   display: flex;
   flex-wrap: wrap;

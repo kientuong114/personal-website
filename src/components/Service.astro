@@ -1,0 +1,57 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import LinkList from "./LinkList.astro";
+
+interface Props {
+  entry: CollectionEntry<"service">;
+}
+
+const { entry } = Astro.props;
+const { role, venues, links } = entry.data;
+
+// Gutter shows the most recent year the role covers.
+const year = Math.max(...venues.map((v) => v.year));
+
+const hasNotes = Boolean(entry.body?.trim());
+const { Content } = await render(entry);
+---
+
+<li class="entry">
+  <div class="entry__year">{year}</div>
+
+  <div class="entry__body">
+    <h3 class="entry__title">{role}</h3>
+
+    {
+      /* A list rather than a joined string, so a venue can carry its own link.
+        Flex drops the whitespace between items, and the separator is drawn by
+        CSS — neither depends on how the template happens to be wrapped. */
+    }
+    <ul class="entry__venues">
+      {
+        venues.map((venue) => (
+          <li>
+            {venue.url ? (
+              <a
+                href={venue.url}
+                rel="noopener"
+              >{`${venue.name} ${venue.year}`}</a>
+            ) : (
+              `${venue.name} ${venue.year}`
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <LinkList links={links} label={`Links for ${role}`} />
+
+    {
+      hasNotes && (
+        <div class="prose">
+          <Content />
+        </div>
+      )
+    }
+  </div>
+</li>

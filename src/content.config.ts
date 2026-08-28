@@ -52,6 +52,35 @@ const talks = defineCollection({
   }),
 });
 
+/**
+ * Community service: programme committees, reviewing, organising.
+ *
+ * One entry can carry several venues, which covers both shapes this needs —
+ * a single named role at one venue, and a role held across a list of them.
+ * A venue may carry its own `url` when the venue itself is the thing worth
+ * linking to; `links` is for anything else, like an event website.
+ */
+const service = defineCollection({
+  loader: glob({ base: "./src/content/service", pattern: "**/*.md" }),
+  schema: z.object({
+    /** What you did, e.g. "Reviewer" or "Co-organizer of ...". */
+    role: z.string(),
+    venues: z
+      .array(
+        z.object({
+          name: z.string(),
+          year: z.number().int().min(1990).max(2100),
+          url: z.url({ protocol: /^https?$/ }).optional(),
+        }),
+      )
+      .nonempty(),
+    /** Sort key. Approximate is fine — only the ordering matters. */
+    date: z.coerce.date(),
+    links: z.array(link).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
 /** Prose blocks appended to the home page, in `order`. */
 const sections = defineCollection({
   loader: glob({ base: "./src/content/sections", pattern: "**/*.md" }),
@@ -88,4 +117,4 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { publications, talks, sections, pages };
+export const collections = { publications, talks, service, sections, pages };

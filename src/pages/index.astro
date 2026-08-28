@@ -5,6 +5,7 @@ import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
 import Publication from "../components/Publication.astro";
 import Talk from "../components/Talk.astro";
+import Service from "../components/Service.astro";
 import Plot from "../components/Plot.astro";
 import propic from "../assets/propic.jpg";
 import { SITE, SEED } from "../config";
@@ -25,6 +26,10 @@ const allTalks = (await getCollection("talks", ({ data }) => !data.draft)).sort(
 );
 const talks = allTalks.filter((t) => t.data.kind === "talk");
 const workshops = allTalks.filter((t) => t.data.kind === "workshop");
+
+const service = (
+  await getCollection("service", ({ data }) => !data.draft)
+).sort(byDateDesc);
 
 // Prose blocks appended after the lists, in their declared order.
 const sections = await Promise.all(
@@ -87,6 +92,18 @@ const sections = await Promise.all(
       {talks.map((entry) => <Talk entry={entry} />)}
     </ol>
   </Section>
+
+  {
+    service.length > 0 && (
+      <Section id="service" title="Service">
+        <ol class="entries">
+          {service.map((entry) => (
+            <Service entry={entry} />
+          ))}
+        </ol>
+      </Section>
+    )
+  }
 
   {
     workshops.length > 0 && (
