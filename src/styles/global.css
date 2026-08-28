@@ -710,6 +710,11 @@ main {
   }
 }
 
+/* For entries with no year to show. */
+.entry--flush {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .entry__year {
   font-family: var(--mono);
   font-size: 0.75rem;

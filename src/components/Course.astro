@@ -9,9 +9,6 @@ interface Props {
 const { entry } = Astro.props;
 const { course, role, institution, terms, links } = entry.data;
 
-// Gutter shows the most recent year the course was taught.
-const year = Math.max(...terms.map((t) => t.year));
-
 // "Teaching Assistant · ETH Zurich", omitting whichever is absent.
 const attribution = [role, institution].filter(Boolean).join(" · ");
 
@@ -19,9 +16,11 @@ const hasNotes = Boolean(entry.body?.trim());
 const { Content } = await render(entry);
 ---
 
-<li class="entry">
-  <div class="entry__year">{year}</div>
-
+{
+  /* No year gutter: a course taught over several terms has no single year to
+    put there, and the terms line already carries them. */
+}
+<li class="entry entry--flush">
   <div class="entry__body">
     <h3 class="entry__title">{course}</h3>
 

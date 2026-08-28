@@ -102,7 +102,9 @@ Both feed `/teaching`. There are copy-paste starting points at
 copy one, drop the `draft: true` line, and fill it in.
 
 A course takes one `terms` entry per time it was taught, each optionally
-linked:
+linked. Courses show no year in the gutter — one taught over several terms has
+no single year to put there — so they are ordered by their most recent term,
+with `date` only as a tiebreaker:
 
 ```markdown
 ---

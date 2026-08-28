@@ -13,9 +13,16 @@ const { Content } = await render(page);
 const byDateDesc = (a: { data: { date: Date } }, b: { data: { date: Date } }) =>
   b.data.date.valueOf() - a.data.date.valueOf();
 
+// With the year gutter gone, `date` is no longer visible anywhere, so ordering
+// by it would be invisible guesswork. Order by the most recent term instead —
+// a course still running sorts above one that has finished — and keep `date`
+// only as the tiebreaker.
+const latestTerm = (e: { data: { terms: readonly { year: number }[] } }) =>
+  Math.max(...e.data.terms.map((t) => t.year));
+
 const courses = (
   await getCollection("courses", ({ data }) => !data.draft)
-).sort(byDateDesc);
+).sort((a, b) => latestTerm(b) - latestTerm(a) || byDateDesc(a, b));
 
 const supervision = (
   await getCollection("supervision", ({ data }) => !data.draft)
