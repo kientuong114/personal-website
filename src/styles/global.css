@@ -880,13 +880,13 @@ main {
   }
 }
 
-@keyframes rise {
+/* Transform only, deliberately: nothing on this page is allowed to depend on
+   an animation running in order to be visible. */
+@keyframes lift {
   from {
-    opacity: 0;
-    transform: translateY(0.6rem);
+    transform: translateY(0.7rem);
   }
   to {
-    opacity: 1;
     transform: none;
   }
 }
@@ -919,35 +919,14 @@ main {
     animation: turn 150s linear infinite reverse;
   }
 
-  .hero__eyebrow,
-  .hero__name,
-  .hero__note,
-  .hero__meta,
-  .hero__bio {
-    animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
-  }
-
-  .hero__name {
-    animation-delay: 60ms;
-  }
-  .hero__note {
-    animation-delay: 140ms;
-  }
-  .hero__meta {
-    animation-delay: 200ms;
-  }
-  .hero__bio {
-    animation-delay: 260ms;
-  }
-
   /* Scroll-linked reveal where the browser supports it; a no-op elsewhere,
      which leaves the content plainly visible. */
   @supports (animation-timeline: view()) {
     .section__body,
     .section__label {
-      animation: rise linear both;
+      animation: lift linear both;
       animation-timeline: view();
-      animation-range: entry 5% entry 42%;
+      animation-range: entry 5% entry 45%;
     }
 
     .mark__draw {
@@ -986,12 +965,9 @@ main {
     display: none !important;
   }
 
-  /* The scroll-linked reveal starts at opacity 0; make sure nothing can be
-     left invisible on paper. */
   .section__body,
   .section__label {
     animation: none !important;
-    opacity: 1 !important;
     transform: none !important;
   }
 
