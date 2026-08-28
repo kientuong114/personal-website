@@ -149,12 +149,32 @@ The scroll-driven pieces use `animation-timeline: view()` and `scroll()` behind
 `@supports`; where those are unavailable the elements are simply in their
 finished state.
 
-The background — grid, lattice and margin arcs — is **static**. It was animated
-at one point (transforms on SVG groups, opacity on sub-groups), which repainted
-hundreds of vector elements every frame and was badly janky. If you add
-background motion again, animate `opacity` or `transform` on a handful of plain
-elements so it stays on the compositor; never animate an SVG group with many
-children.
+### Why some animation here is smooth and some was not
+
+The rule that matters: **Chrome never splits an SVG into more than one GPU
+layer.** A transform on a `<g>` or a `<path>` therefore cannot be promoted on
+its own — the browser re-rasterises the _entire_ `<svg>` every frame. What
+costs is the raster area, not the element count.
+
+That is why the hero plot spins smoothly while the background did not. The
+plot's SVG is a ~336px box, so re-rastering it 60 times a second is cheap. The
+lattice and field are `position: fixed; inset: 0` — full-viewport SVGs. Turning
+a group inside one of those re-rasters the whole viewport every frame, and that
+is what made it choppy.
+
+So, when adding motion:
+
+- Animate `transform` or `opacity` on an **outer box** — an HTML element, or the
+  `<svg>` element itself. Those are ordinary CSS boxes and can be promoted to
+  their own layer, after which the GPU just moves an existing texture.
+- Never animate something _inside_ a large SVG. `.mark` rotates the `<svg>`
+  element; the dashed rules translate a `<span>` inside a clipping div. Both are
+  composited.
+- Add `will-change: transform` to the handful of elements that animate
+  continuously, and only those — each one costs GPU memory.
+- Don't translate a hairline pattern slowly. Sub-pixel movement of 1px lines
+  snaps between device pixels and reads as jitter however smooth the frame rate
+  is; that is why the graph-paper grid is static.
 
 > **Do not switch CSS minification back to Lightning CSS.** It folds
 > `animation-timeline` into the `animation` shorthand — `animation: linear both

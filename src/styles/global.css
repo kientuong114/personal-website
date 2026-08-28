@@ -51,8 +51,9 @@
   --ground: 232 233 235;
 
   --shell: 68rem;
-  --rail: 7.5rem; /* left margin where section labels hang */
+  --rail: 10rem; /* left margin where section labels hang */
   --prose: 34rem; /* reading measure, kept narrow */
+  --dash: 14px; /* one period of the dashed section rules */
 
   /* Text steps: 60% measures 4.89:1 on the light ground, 70% 6.90:1. Below
      that (45%) is for hairlines and stroke work only, never for type. */
@@ -600,18 +601,6 @@ main {
   padding-block: 3rem;
 }
 
-/* The section rule is a pseudo-element rather than a border so it can be
-   drawn in from the left as the section arrives. */
-.section::before {
-  content: "";
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline: 0;
-  height: 1px;
-  background: var(--ink-12);
-  transform-origin: left center;
-}
-
 @media (min-width: 60rem) {
   .section {
     display: grid;
@@ -621,13 +610,39 @@ main {
   }
 }
 
+/* A window that clips its own contents, so the dashes inside can translate
+   without leaving a gap at either end. */
+.section__rule {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  height: 1px;
+  overflow: hidden;
+  transform-origin: left center;
+}
+
+.section__rule span {
+  position: absolute;
+  /* Overhang on both sides covers the travel. */
+  inset: 0 calc(var(--dash) * -2);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ink-22) 0 calc(var(--dash) * 0.42),
+    transparent calc(var(--dash) * 0.42) var(--dash)
+  );
+}
+
 .section__label {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
   margin-bottom: 1.75rem;
 }
 
 @media (min-width: 60rem) {
   .section__label {
+    align-self: start;
     margin-bottom: 0;
     /* Align the label's cap height with the first line of the body. */
     margin-top: 0.42rem;
@@ -639,17 +654,10 @@ main {
 }
 
 .mark {
-  display: none;
-  width: 54px;
-  height: 54px;
-  margin-top: 1.1rem;
+  flex: none;
+  width: 36px;
+  height: 36px;
   overflow: visible;
-}
-
-@media (min-width: 60rem) {
-  .mark {
-    display: block;
-  }
 }
 
 .mark__hair {
@@ -982,6 +990,13 @@ main {
   }
 }
 
+/* Exactly one dash period, so the pattern repeats without a visible jump. */
+@keyframes dash-drift {
+  to {
+    transform: translateX(var(--dash));
+  }
+}
+
 /* A rule drawn from its start point. */
 @keyframes rule-in {
   from {
@@ -1028,6 +1043,24 @@ main {
     animation: turn 62s linear infinite reverse;
   }
 
+  /* Each section mark turns on its own clock. The transform is on the <svg>
+     element itself — a normal CSS box — so it composites; on an inner <g> it
+     would repaint every child instead. */
+  .mark {
+    will-change: transform;
+    animation: turn var(--period, 24s) linear infinite var(--dir, normal);
+  }
+
+  .section__rule span {
+    will-change: transform;
+    animation: dash-drift 14s linear infinite;
+  }
+
+  /* Alternate sections drift the other way. */
+  .section:nth-of-type(even) .section__rule span {
+    animation-direction: reverse;
+  }
+
   /* The abstract's rule is drawn down as it opens, and the text settles. */
   .abstract[open] > .abstract__body::before {
     animation: rule-down 480ms cubic-bezier(0.2, 0.85, 0.25, 1) both;
@@ -1049,7 +1082,7 @@ main {
   }
 
   @supports (animation-timeline: view()) {
-    .section::before {
+    .section__rule {
       animation: rule-in linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 55%;

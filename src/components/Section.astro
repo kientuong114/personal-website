@@ -14,10 +14,14 @@ const labelId = id ? `${id}-label` : undefined;
 ---
 
 <section id={id} class="section" aria-labelledby={labelId}>
+  {/* The rule clips its own dashes, so they can drift without gapping. */}
+  <div class="section__rule" aria-hidden="true"><span></span></div>
+
   <div class="section__label">
-    <Tag id={labelId} class="label">{title}</Tag>
     <Mark key={id ?? title} seed={SEED} />
+    <Tag id={labelId} class="label">{title}</Tag>
   </div>
+
   <div class="section__body">
     <slot />
   </div>

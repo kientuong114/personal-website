@@ -31,11 +31,16 @@ const sides = Math.floor(between(r, 4, 7));
 const shape: Point[] = irregularPolygon(r, C, C, 13, sides, 0.16);
 const ticks = tickRing(r, C, C, 20, 9, 2.2, 3);
 const node = shape[Math.floor(r() * shape.length)]!;
+
+// Each mark turns at its own rate and direction, so no two are ever in step.
+const period = Math.round(between(r, 17, 31));
+const direction = r() > 0.5 ? "normal" : "reverse";
 ---
 
 <svg
   class="mark"
   viewBox={`0 0 ${BOX} ${BOX}`}
+  style={`--period:${period}s; --dir:${direction}`}
   aria-hidden="true"
   focusable="false"
 >
