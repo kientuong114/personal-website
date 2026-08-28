@@ -129,12 +129,22 @@ Nothing runs in the browser — it all renders to static SVG.
 
 ### Motion
 
-One orchestrated moment on load: the hero construction draws itself stroke by
-stroke via `pathLength="1"` and `stroke-dashoffset`, staggered per element.
-After that the page is nearly still — two rings turn on 150s and 240s cycles.
-Interaction is the inversion wipe. Section marks draw as they scroll into view
-where `animation-timeline: view()` is supported, and are simply visible where it
-is not. All of it sits inside `prefers-reduced-motion: no-preference`.
+Everything moving is either something being drawn or an instrument turning —
+there are no fades or slides. All of it lives inside
+`prefers-reduced-motion: no-preference`, and nothing on the page depends on an
+animation to become visible.
+
+| When                | What                                                                                                                                                                                                            |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Load                | the hero construction draws itself stroke by stroke, staggered per element, via `pathLength="1"` and `stroke-dashoffset`                                                                                        |
+| Ambient             | the hero's two rings counter-rotate on 150s and 240s; each section's dial turns on its own seeded period (170–330s) and direction, so none are ever in step                                                     |
+| Scroll              | section rules draw in from the left, section marks draw, content lifts, the margin geometry rotates slightly as if the plate were turning, and the masthead hairline fills as a reading-progress dimension line |
+| Hover               | the inversion wipe on tag links                                                                                                                                                                                 |
+| Opening an abstract | its left rule is drawn downward and the text settles                                                                                                                                                            |
+
+The scroll-driven pieces use `animation-timeline: view()` and `scroll()` behind
+`@supports`; where those are unavailable the elements are simply in their
+finished state.
 
 ### The social card
 

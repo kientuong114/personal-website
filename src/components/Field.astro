@@ -33,17 +33,19 @@ const marks = Array.from({ length: 4 }, (_, i) => ({
   aria-hidden="true"
   focusable="false"
 >
-  {arcs.map((d) => <path d={d} class="field__hair" />)}
-  {ring.map((d) => <path d={d} class="field__hair" />)}
-  {
-    marks.map((m) => (
-      <g
-        class="field__mark"
-        transform={`translate(${m.x.toFixed(1)} ${m.y.toFixed(1)}) rotate(${m.a.toFixed(1)})`}
-      >
-        <line x1="-7" y1="0" x2="7" y2="0" />
-        <line x1="0" y1="-7" x2="0" y2="7" />
-      </g>
-    ))
-  }
+  <g class="field__drift">
+    {arcs.map((d) => <path d={d} class="field__hair" />)}
+    {ring.map((d) => <path d={d} class="field__hair" />)}
+    {
+      marks.map((m) => (
+        <g
+          class="field__mark"
+          transform={`translate(${m.x.toFixed(1)} ${m.y.toFixed(1)}) rotate(${m.a.toFixed(1)})`}
+        >
+          <line x1="-7" y1="0" x2="7" y2="0" />
+          <line x1="0" y1="-7" x2="0" y2="7" />
+        </g>
+      ))
+    }
+  </g>
 </svg>

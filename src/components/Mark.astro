@@ -31,6 +31,11 @@ const sides = Math.floor(between(r, 4, 7));
 const shape: Point[] = irregularPolygon(r, C, C, 13, sides, 0.16);
 const ticks = tickRing(r, C, C, 20, 9, 2.2, 3);
 const node = shape[Math.floor(r() * shape.length)]!;
+
+// Each dial turns at its own rate and direction, so no two section marks are
+// ever in step with each other or with the hero rings.
+const period = Math.round(between(r, 170, 330));
+const direction = r() > 0.5 ? "normal" : "reverse";
 ---
 
 <svg
@@ -39,18 +44,20 @@ const node = shape[Math.floor(r() * shape.length)]!;
   aria-hidden="true"
   focusable="false"
 >
-  {
-    ticks.map((t) => (
-      <line
-        x1={t.x1}
-        y1={t.y1}
-        x2={t.x2}
-        y2={t.y2}
-        pathLength="1"
-        class="mark__hair mark__draw"
-      />
-    ))
-  }
+  <g class="mark__turn" style={`--period:${period}s; --dir:${direction}`}>
+    {
+      ticks.map((t) => (
+        <line
+          x1={t.x1}
+          y1={t.y1}
+          x2={t.x2}
+          y2={t.y2}
+          pathLength="1"
+          class="mark__hair mark__draw"
+        />
+      ))
+    }
+  </g>
   <polygon
     points={pointsAttr(shape)}
     pathLength="1"
