@@ -1,0 +1,18 @@
+---
+import { NAV } from "../config";
+import ExtArrow from "./ExtArrow.astro";
+---
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav__inner">
+    <a class="nav__home" href="/">ktruong.dev</a>
+    {
+      NAV.map((item) => (
+        <a href={item.href} rel={item.external ? "noopener" : undefined}>
+          {item.label}
+          {item.external && <ExtArrow />}
+        </a>
+      ))
+    }
+  </div>
+</nav>

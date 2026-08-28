@@ -1,0 +1,38 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import LinkList from "./LinkList.astro";
+
+interface Props {
+  entry: CollectionEntry<"talks">;
+}
+
+const { entry } = Astro.props;
+const { title, venues, links } = entry.data;
+
+// Gutter shows the most recent year the talk was given.
+const year = Math.max(...venues.map((v) => v.year));
+const venueLine = venues.map((v) => `${v.name} ${v.year}`).join(" · ");
+
+const hasNotes = Boolean(entry.body?.trim());
+const { Content } = await render(entry);
+---
+
+<li class="entry">
+  <div class="entry__year">{year}</div>
+
+  <div class="entry__body">
+    <h3 class="entry__title">{title}</h3>
+
+    <p class="entry__venue">{venueLine}</p>
+
+    <LinkList links={links} label={`Links for ${title}`} />
+
+    {
+      hasNotes && (
+        <div class="prose">
+          <Content />
+        </div>
+      )
+    }
+  </div>
+</li>

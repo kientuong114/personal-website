@@ -1,0 +1,13 @@
+---
+import { SITE } from "../config";
+import ExtArrow from "./ExtArrow.astro";
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <span class="footer__spacer">{SITE.name}</span>
+    <a href="/contact">contact</a>
+    <a href="/contact#public-keys">public keys</a>
+    <a href={SITE.blog} rel="noopener">blog<ExtArrow /></a>
+  </div>
+</footer>

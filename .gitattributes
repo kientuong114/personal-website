@@ -1,1 +1,5 @@
-elm.js linguist-generated
+* text=auto eol=lf
+*.woff2 binary
+*.jpg binary
+*.png binary
+*.ico binary

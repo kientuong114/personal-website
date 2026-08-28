@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.1" fill="#78ffaa" fill-opacity="0.075"/>
+    </pattern>
+    <pattern id="cells" width="48" height="48" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.7" fill="#78ffaa" fill-opacity="0.11"/>
+    </pattern>
+    <pattern id="scan" width="6" height="6" patternUnits="userSpaceOnUse">
+      <rect x="0" y="4" width="6" height="2" fill="#000" fill-opacity="0.22"/>
+    </pattern>
+    <radialGradient id="vig" cx="50%" cy="45%" r="78%">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0.55"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0d0f0d"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect width="1200" height="630" fill="url(#cells)"/>
+  <rect width="1200" height="630" fill="url(#scan)"/>
+  <rect width="1200" height="630" fill="url(#vig)"/>
+
+  <g font-family="JetBrains Mono" font-size="28" fill="#4ade80">
+    <text x="88" y="150">&gt; whoami</text>
+  </g>
+
+  <text x="88" y="272" font-family="Signika Negative" font-weight="600"
+        font-size="92" fill="#d8e6da" letter-spacing="-1.5">Kien Tuong Truong</text>
+
+  <g font-family="JetBrains Mono" font-size="29" fill="#8b9d8e">
+    <text x="88" y="342"><tspan fill="#4ade80">&gt;</tspan><tspan dx="14">PhD student, Applied Cryptography Group</tspan></text>
+    <text x="88" y="392"><tspan fill="#4ade80">&gt;</tspan><tspan dx="14">ETH Zurich</tspan></text>
+    <text x="88" y="442"><tspan fill="#4ade80">&gt;</tspan><tspan dx="14">attacks on real-world cryptography</tspan></text>
+  </g>
+
+  <rect x="88" y="500" width="1024" height="1" fill="#78ffaa" fill-opacity="0.18"/>
+
+  <g font-family="JetBrains Mono" font-size="27">
+    <text x="88" y="556" fill="#4ade80">ktruong.dev</text>
+  </g>
+  <rect x="272" y="536" width="17" height="26" fill="#4ade80" fill-opacity="0.85"/>
+</svg>

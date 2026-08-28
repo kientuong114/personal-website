@@ -1,0 +1,23 @@
+---
+interface Props {
+  links: readonly { label: string; url: string }[];
+  /** Accessible name for the list, e.g. "Links for <paper title>". */
+  label: string;
+}
+
+const { links, label } = Astro.props;
+---
+
+{
+  links.length > 0 && (
+    <ul class="linklist" aria-label={label}>
+      {links.map((link) => (
+        <li>
+          <a href={link.url} rel="noopener">
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}

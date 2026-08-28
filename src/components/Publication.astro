@@ -1,0 +1,44 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import { SITE } from "../config";
+import { formatAuthors } from "../lib/authors";
+import LinkList from "./LinkList.astro";
+
+interface Props {
+  entry: CollectionEntry<"publications">;
+}
+
+const { entry } = Astro.props;
+const { title, authors, venue, year, links } = entry.data;
+
+const authorsHtml = formatAuthors(authors, SITE.author);
+
+// The markdown body is the abstract. Some entries may not have one yet.
+const hasAbstract = Boolean(entry.body?.trim());
+const { Content } = await render(entry);
+---
+
+<li class="entry">
+  <div class="entry__year">{year}</div>
+
+  <div class="entry__body">
+    <h3 class="entry__title">{title}</h3>
+
+    <p class="entry__authors" set:html={authorsHtml} />
+
+    <p class="entry__venue">{`${venue} ${year}`}</p>
+
+    <LinkList links={links} label={`Links for ${title}`} />
+
+    {
+      hasAbstract && (
+        <details class="abstract">
+          <summary>abstract</summary>
+          <div class="abstract__body prose">
+            <Content />
+          </div>
+        </details>
+      )
+    }
+  </div>
+</li>
