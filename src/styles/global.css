@@ -127,8 +127,7 @@ img {
 body::before {
   content: "";
   position: fixed;
-  /* Oversized, so the ambient creep never pulls an edge into view. */
-  inset: -140px;
+  inset: 0;
   z-index: -3;
   pointer-events: none;
   background-image:
@@ -1015,10 +1014,14 @@ main {
   }
 }
 
-/* Graph paper easing under the drawing. One tile, so it loops seamlessly. */
-@keyframes grid-creep {
+/* The whole graph gliding and rocking. Transform on one group, so it is
+   composited and genuinely smooth — unlike a translated hairline pattern. */
+@keyframes lattice-float {
+  from {
+    transform: scale(1.14) translate(-2.6%, -1.7%) rotate(-4.5deg);
+  }
   to {
-    transform: translate(96px, 96px);
+    transform: scale(1.14) translate(2.6%, 1.7%) rotate(4.5deg);
   }
 }
 
@@ -1077,15 +1080,17 @@ main {
     animation: turn var(--period, 90s) linear infinite var(--dir, normal);
   }
 
-  body::before {
-    animation: grid-creep 75s linear infinite;
-  }
-
   /* The lattice runs continuously, in groups rather than per element — see
      the note in Lattice.astro on why. */
   .lattice__pulse {
     animation: hold var(--period, 24s) ease-in-out infinite;
     animation-delay: var(--delay, 0s);
+  }
+
+  .lattice__float {
+    transform-box: view-box;
+    transform-origin: center;
+    animation: lattice-float 26s ease-in-out infinite alternate;
   }
 
   /* The abstract's rule is drawn down as it opens, and the text settles. */
@@ -1124,32 +1129,38 @@ main {
 
   @supports (animation-timeline: scroll()) {
     /* Scaled up so the rotation never pulls the drawing off its own edges. */
+    /* A scroll timeline spreads its whole range over the whole document, so
+       one pass across a long page is far too slow to feel. Cycling a few
+       times — alternating, so displacement stays bounded — gives a rate you
+       actually perceive without needing enormous travel. */
     .field__drift,
     .lattice__drift {
       transform-box: view-box;
       transform-origin: center;
       animation: plate-drift linear both;
       animation-timeline: scroll(root block);
+      animation-iteration-count: 3;
+      animation-direction: alternate;
     }
 
     /* Different swings, so the margins read as layers at different depths. */
     .field__drift--far {
-      --pd-turn: -3deg;
-      --pd-shift: -2%;
-      --pd-scale: 1.08;
-    }
-
-    .field__drift--near {
-      --pd-turn: -9.5deg;
+      --pd-turn: -3.5deg;
       --pd-shift: -7%;
       --pd-scale: 1.2;
     }
 
+    .field__drift--near {
+      --pd-turn: -9deg;
+      --pd-shift: -16%;
+      --pd-scale: 1.34;
+    }
+
     /* The lattice counter-drifts, which reads as the deepest layer. */
     .lattice__drift {
-      --pd-turn: 4.5deg;
-      --pd-shift: 3.5%;
-      --pd-scale: 1.14;
+      --pd-turn: 5.5deg;
+      --pd-shift: 11%;
+      --pd-scale: 1.26;
     }
 
     .masthead__progress {

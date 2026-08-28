@@ -137,17 +137,24 @@ there are no fades or slides. All of it lives inside
 `prefers-reduced-motion: no-preference`, and nothing on the page depends on an
 animation to become visible.
 
-| When                | What                                                                                                                                                                                                                                                                  |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Load                | the hero construction draws itself stroke by stroke, staggered per element, via `pathLength="1"` and `stroke-dashoffset`                                                                                                                                              |
-| Ambient             | the hero's two rings counter-rotate on 62s and 90s; each section's dial and each registration cross turns on its own seeded period and direction; the lattice holds and drops connections in eight interleaved groups; the graph-paper grid creeps one tile every 75s |
-| Scroll              | section rules draw in from the left, section marks draw, content lifts, the three background layers swing by different amounts and the lattice counter-drifts, and the masthead hairline fills as a reading-progress dimension line                                   |
-| Hover               | the inversion wipe on tag links                                                                                                                                                                                                                                       |
-| Opening an abstract | its left rule is drawn downward and the text settles                                                                                                                                                                                                                  |
+| When                | What                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Load                | the hero construction draws itself stroke by stroke, staggered per element, via `pathLength="1"` and `stroke-dashoffset`                                                                                                                                                                                                                               |
+| Ambient             | the hero's two rings counter-rotate on 62s and 90s; each section's dial and each registration cross turns on its own seeded period and direction; the whole lattice glides and rocks on a 26s cycle while its connections hold and drop in ten interleaved groups                                                                                      |
+| Scroll              | section rules draw in from the left, section marks draw, content lifts, the three background layers swing by different amounts (the lattice counter-drifting), and the masthead hairline fills as a reading-progress dimension line. The layers cycle three times across the page, alternating — one pass over a long document is far too slow to feel |
+| Hover               | the inversion wipe on tag links                                                                                                                                                                                                                                                                                                                        |
+| Opening an abstract | its left rule is drawn downward and the text settles                                                                                                                                                                                                                                                                                                   |
 
 The scroll-driven pieces use `animation-timeline: view()` and `scroll()` behind
 `@supports`; where those are unavailable the elements are simply in their
 finished state.
+
+> **Do not switch CSS minification back to Lightning CSS.** It folds
+> `animation-timeline` into the `animation` shorthand — `animation: linear both
+lift view()`. That property is deliberately not part of the shorthand, so
+> browsers drop the whole declaration and every scroll-driven animation dies in
+> the build while still working in `astro dev`. `vite.build.cssMinify` is pinned
+> to `"esbuild"` in `astro.config.mjs` for this reason.
 
 ### The social card
 

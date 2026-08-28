@@ -210,9 +210,11 @@ export function lattice(
   maxDist: number,
   maxLinks: number,
 ): { nodes: Point[]; links: Link[] } {
+  // Whole units: this is a background scatter drawn at well under 1:1, so
+  // sub-pixel precision only costs bytes in the inlined SVG.
   const nodes: Point[] = Array.from({ length: nodeCount }, () => ({
-    x: round(between(r, 0.015, 0.985) * width),
-    y: round(between(r, 0.02, 0.98) * height),
+    x: Math.round(between(r, 0.015, 0.985) * width),
+    y: Math.round(between(r, 0.02, 0.98) * height),
   }));
 
   const candidates: (Link & { d: number })[] = [];
