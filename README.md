@@ -24,6 +24,8 @@ authors: [Kien Tuong Truong, Noemi Terzo, Kenny Paterson]
 venue: USENIX Security # venue name, without the year
 year: 2026 # shown in the left gutter
 date: 2026-08-12 # sort key only; approximate is fine
+awards: # optional; rendered as an inverted stamp
+  - Distinguished Paper Award Runner-Up
 links:
   - { label: ePrint, url: "https://eprint.iacr.org/2025/558" }
   - { label: paper, url: "https://dl.acm.org/doi/..." }
@@ -119,11 +121,12 @@ the hero construction, the background field, and each section's margin mark.
 
 Three things use it:
 
-| Component     | What it draws                                                                           |
-| ------------- | --------------------------------------------------------------------------------------- |
-| `Plot.astro`  | the hero construction; the portrait is CSS-clipped to the same polygon the SVG outlines |
-| `Field.astro` | large arcs and registration marks, masked to the outer margins                          |
-| `Mark.astro`  | a small mark per section, seeded from the section id                                    |
+| Component       | What it draws                                                                                                                                          |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Plot.astro`    | the hero construction; the portrait is CSS-clipped to the same polygon the SVG outlines                                                                |
+| `Field.astro`   | large arcs and registration marks, masked to the outer margins, in two layers that swing by different amounts as you scroll                            |
+| `Lattice.astro` | a node scatter with short-range links — the graph a generative system builds while it runs. Full width, quietened to a third behind the reading column |
+| `Mark.astro`    | a small mark per section, seeded from the section id                                                                                                   |
 
 Nothing runs in the browser — it all renders to static SVG.
 
@@ -134,13 +137,13 @@ there are no fades or slides. All of it lives inside
 `prefers-reduced-motion: no-preference`, and nothing on the page depends on an
 animation to become visible.
 
-| When                | What                                                                                                                                                                                                            |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Load                | the hero construction draws itself stroke by stroke, staggered per element, via `pathLength="1"` and `stroke-dashoffset`                                                                                        |
-| Ambient             | the hero's two rings counter-rotate on 62s and 90s; each section's dial turns on its own seeded period (70–140s) and direction, so none are ever in step                                                        |
-| Scroll              | section rules draw in from the left, section marks draw, content lifts, the margin geometry rotates slightly as if the plate were turning, and the masthead hairline fills as a reading-progress dimension line |
-| Hover               | the inversion wipe on tag links                                                                                                                                                                                 |
-| Opening an abstract | its left rule is drawn downward and the text settles                                                                                                                                                            |
+| When                | What                                                                                                                                                                                                                                                                  |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Load                | the hero construction draws itself stroke by stroke, staggered per element, via `pathLength="1"` and `stroke-dashoffset`                                                                                                                                              |
+| Ambient             | the hero's two rings counter-rotate on 62s and 90s; each section's dial and each registration cross turns on its own seeded period and direction; the lattice holds and drops connections in eight interleaved groups; the graph-paper grid creeps one tile every 75s |
+| Scroll              | section rules draw in from the left, section marks draw, content lifts, the three background layers swing by different amounts and the lattice counter-drifts, and the masthead hairline fills as a reading-progress dimension line                                   |
+| Hover               | the inversion wipe on tag links                                                                                                                                                                                                                                       |
+| Opening an abstract | its left rule is drawn downward and the text settles                                                                                                                                                                                                                  |
 
 The scroll-driven pieces use `animation-timeline: view()` and `scroll()` behind
 `@supports`; where those are unavailable the elements are simply in their

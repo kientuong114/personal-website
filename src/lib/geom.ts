@@ -194,3 +194,47 @@ export function fieldArcs(
     return arcPath(cx, cy, radius, from, from + between(r, 0.5, 2.4));
   });
 }
+
+export type Link = { x1: number; y1: number; x2: number; y2: number };
+
+/**
+ * A node scatter with short-range connections — the graph a generative system
+ * builds while it runs. Links are the `maxLinks` shortest pairs under
+ * `maxDist`, so the result reads as a neighbourhood rather than a mesh.
+ */
+export function lattice(
+  r: Rand,
+  width: number,
+  height: number,
+  nodeCount: number,
+  maxDist: number,
+  maxLinks: number,
+): { nodes: Point[]; links: Link[] } {
+  const nodes: Point[] = Array.from({ length: nodeCount }, () => ({
+    x: round(between(r, 0.015, 0.985) * width),
+    y: round(between(r, 0.02, 0.98) * height),
+  }));
+
+  const candidates: (Link & { d: number })[] = [];
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const a = nodes[i]!;
+      const b = nodes[j]!;
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      if (d <= maxDist) {
+        candidates.push({ x1: a.x, y1: a.y, x2: b.x, y2: b.y, d });
+      }
+    }
+  }
+  candidates.sort((p, q) => p.d - q.d);
+
+  return {
+    nodes,
+    links: candidates.slice(0, maxLinks).map(({ x1, y1, x2, y2 }) => ({
+      x1,
+      y1,
+      x2,
+      y2,
+    })),
+  };
+}
