@@ -34,7 +34,7 @@ const node = shape[Math.floor(r() * shape.length)]!;
 
 // Each dial turns at its own rate and direction, so no two section marks are
 // ever in step with each other or with the hero rings.
-const period = Math.round(between(r, 170, 330));
+const period = Math.round(between(r, 70, 140));
 const direction = r() > 0.5 ? "normal" : "reverse";
 ---
 
