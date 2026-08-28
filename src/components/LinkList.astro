@@ -10,10 +10,10 @@ const { links, label } = Astro.props;
 
 {
   links.length > 0 && (
-    <ul class="linklist" aria-label={label}>
+    <ul class="entry__links" aria-label={label}>
       {links.map((link) => (
         <li>
-          <a href={link.url} rel="noopener">
+          <a class="tag" href={link.url} rel="noopener">
             {link.label}
           </a>
         </li>

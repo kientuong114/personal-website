@@ -1,5 +1,5 @@
 ---
-title: (More) About Me
+title: About
 anchor: about
 order: 1
 ---

@@ -1,16 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
-import Panel from "../components/Panel.astro";
 ---
 
 <Base title="Page not found">
-  <Panel labelledby="notfound-head">
-    <div class="notfound">
-      <p class="notfound__code">404</p>
-      <h1 id="notfound-head">Page not found</h1>
-      <p class="prose" style="margin-top: 1rem">
-        That page does not exist. <a href="/">Back to the homepage</a>.
-      </p>
-    </div>
-  </Panel>
+  <div class="notfound">
+    <p class="notfound__code">404</p>
+    <h1 class="label" style="margin-top:1.5rem">Page not found</h1>
+    <p class="prose" style="margin-top:1rem">
+      That page does not exist. <a href="/">Back to the homepage</a>.
+    </p>
+  </div>
 </Base>

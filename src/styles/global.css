@@ -1,32 +1,41 @@
 /* ==========================================================================
-   ktruong.dev — one stylesheet. No framework, no JavaScript.
+   ktruong.dev
 
-   Layout is a single column of frosted panels over a CRT dot-matrix texture,
-   carried over from the old WebGL background but drawn entirely with CSS
-   gradients. Light mode is the original white-glass look; dark mode is a
-   phosphor terminal. Both come from the same token set.
+   Two colours, swapped. The palette is one ink and one ground; dark mode is
+   the same two values exchanged, which is the whole colour system — there is
+   no accent. Emphasis is carried by *inversion*: a hovered link, an open
+   abstract, the active nav item all flip to an ink field with ground-coloured
+   type, rather than changing hue.
+
+   Structure comes from a hairline rail down the left margin with the section
+   labels hung off it, the way annotations sit in the margin of a technical
+   drawing. The geometry (see src/lib/geom.ts) is generated at build time from
+   a seed: constructed precisely, then knocked out of true.
+
+   No JavaScript.
    ========================================================================== */
 
-/* --- fonts ---------------------------------------------------------------
-   Self-hosted latin subsets. Signika Negative carries the prose voice from
-   the previous site; JetBrains Mono carries the structural/terminal voice
-   (nav, years, venues, bracketed links, key fingerprints).
+/* --- faces --------------------------------------------------------------
+   Bricolage Grotesque is a grotesque with deliberate inconsistencies between
+   its letterforms, which is the brief in type: a machine system with the
+   irregularity left in. It carries the display and the prose. DM Mono
+   handles everything the machine says — labels, venues, years, key blocks.
    ----------------------------------------------------------------------- */
 
 @font-face {
-  font-family: "Signika Negative";
+  font-family: "Bricolage Grotesque";
   font-style: normal;
-  font-weight: 300 700;
+  font-weight: 300 800;
   font-display: swap;
-  src: url("/fonts/signika-negative-latin.woff2") format("woff2");
+  src: url("/fonts/bricolage-grotesque-latin.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "JetBrains Mono";
+  font-family: "DM Mono";
   font-style: normal;
-  font-weight: 400 700;
+  font-weight: 400;
   font-display: swap;
-  src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  src: url("/fonts/dm-mono-latin.woff2") format("woff2");
 }
 
 /* --- tokens ------------------------------------------------------------ */
@@ -34,77 +43,43 @@
 :root {
   color-scheme: light dark;
 
-  --sans:
-    "Signika Negative", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    sans-serif;
-  --mono:
-    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --measure: 60rem; /* content column */
-  --gutter: 4.5rem; /* year column on entries */
+  /* The two values. Everything else is one of them at reduced opacity. */
+  --ink: 10 11 13;
+  --ground: 232 233 235;
 
-  /* light: the original near-white glass */
-  --bg: #f4f4f2;
-  --fg: #101014;
-  --fg-muted: #55555f;
-  --panel: rgb(255 255 255 / 0.72);
-  --edge-hi: #ffffff;
-  --edge-lo: rgb(255 255 255 / 0.1);
-  --link: #50627d;
-  --link-hover: #0f172b;
-  --accent: #1f6f4a;
-  --rule: rgb(0 0 0 / 0.14);
-  --dot: rgb(0 0 0 / 0.04);
-  --dot-strong: rgb(0 0 0 / 0.055);
-  --scanline: rgb(0 0 0 / 0.022);
-  --vignette: rgb(0 0 0 / 0.07);
-  --scanbar: rgb(255 255 255 / 0.5);
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  --shell: 68rem;
+  --rail: 7.5rem; /* left margin where section labels hang */
+  --prose: 34rem; /* reading measure, kept narrow */
+
+  /* Text steps: 60% measures 4.89:1 on the light ground, 70% 6.90:1. Below
+     that (45%) is for hairlines and stroke work only, never for type. */
+  --ink-70: rgb(var(--ink) / 0.7);
+  --ink-60: rgb(var(--ink) / 0.6);
+  --ink-45: rgb(var(--ink) / 0.45);
+  --ink-22: rgb(var(--ink) / 0.22);
+  --ink-12: rgb(var(--ink) / 0.12);
+  --ink-06: rgb(var(--ink) / 0.06);
 }
 
+/* Dark is the same two numbers, exchanged. */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* dark: phosphor CRT */
-    --bg: #0d0f0d;
-    --fg: #d8e6da;
-    --fg-muted: #8b9d8e;
-    --panel: rgb(22 26 22 / 0.6);
-    --edge-hi: rgb(120 255 170 / 0.2);
-    --edge-lo: rgb(0 0 0 / 0.4);
-    --link: #6ee7a0;
-    --link-hover: #b9ffd2;
-    --accent: #4ade80;
-    --rule: rgb(120 255 170 / 0.18);
-    --dot: rgb(120 255 170 / 0.05);
-    --dot-strong: rgb(120 255 170 / 0.08);
-    --scanline: rgb(0 0 0 / 0.16);
-    --vignette: rgb(0 0 0 / 0.45);
-    --scanbar: rgb(120 255 170 / 0.045);
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+    --ink: 232 233 235;
+    --ground: 10 11 13;
   }
 }
 
-/* Respect a stated preference for more contrast: the previous site did this
-   for links and it is worth keeping. */
 @media (prefers-contrast: more) {
   :root {
-    --fg: #000000;
-    --fg-muted: #2a2a30;
-    --link: #0d3f8f;
-    --link-hover: #001d4d;
-    --panel: rgb(255 255 255 / 0.94);
-    --rule: rgb(0 0 0 / 0.4);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --fg: #ffffff;
-      --fg-muted: #d2e2d4;
-      --link: #8dffb8;
-      --link-hover: #ffffff;
-      --panel: rgb(8 10 8 / 0.94);
-      --rule: rgb(141 255 184 / 0.5);
-    }
+    --ink-70: rgb(var(--ink) / 1);
+    --ink-60: rgb(var(--ink) / 0.92);
+    --ink-45: rgb(var(--ink) / 0.85);
+    --ink-22: rgb(var(--ink) / 0.6);
+    --ink-12: rgb(var(--ink) / 0.45);
+    --ink-06: rgb(var(--ink) / 0.3);
   }
 }
 
@@ -123,24 +98,18 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
-  /* Anchored sections clear the sticky nav. */
-  scroll-padding-top: 4.5rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  scroll-padding-top: 5rem;
 }
 
 body {
   min-height: 100vh;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--sans);
+  background: rgb(var(--ground));
+  color: rgb(var(--ink) / 0.82);
+  font-family: var(--display);
   font-size: 1.0625rem;
-  font-weight: 300;
+  font-weight: 350;
   line-height: 1.7;
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -151,16 +120,8 @@ img {
   height: auto;
 }
 
-ul,
-ol {
-  padding-inline-start: 1.25rem;
-}
-
-/* --- background texture -------------------------------------------------
-   Four gradient layers stand in for the old GLSL dot-matrix shader:
-   a fine dot grid, stronger cell-corner dots, scanlines, and a CRT vignette.
-   `position: fixed; inset: 0` also fixes the old `height: 100vh` jump on
-   mobile browsers with dynamic toolbars.
+/* --- the field ----------------------------------------------------------
+   A coordinate grid, drawn in CSS, with the generated arcs on top of it.
    ----------------------------------------------------------------------- */
 
 body::before {
@@ -170,97 +131,228 @@ body::before {
   z-index: -2;
   pointer-events: none;
   background-image:
-    radial-gradient(125% 85% at 50% 45%, transparent 52%, var(--vignette) 100%),
-    repeating-linear-gradient(
-      180deg,
-      transparent 0 2px,
-      var(--scanline) 2px 3px
-    ),
-    radial-gradient(circle at 1px 1px, var(--dot-strong) 1.2px, transparent 0),
-    radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0);
-  background-size:
-    100% 100%,
-    100% 3px,
-    24px 24px,
-    6px 6px;
+    linear-gradient(90deg, var(--ink-06) 0 1px, transparent 1px 100%),
+    linear-gradient(180deg, var(--ink-06) 0 1px, transparent 1px 100%);
+  background-size: 96px 96px;
+  /* Fade the grid out toward the bottom so it does not fight the text. */
+  mask-image: linear-gradient(180deg, black 0%, black 30%, transparent 92%);
 }
 
-/* A single soft bar rolling down the screen — the one motion on the page,
-   echoing the scrolling bar in the old shader. GPU-composited transform on
-   one element, and absent entirely when reduced motion is requested. */
-body::after {
-  content: "";
+.field {
   position: fixed;
-  inset-inline: 0;
-  top: 0;
-  height: 45vh;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: -1;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    var(--scanbar) 55%,
-    transparent 100%
+  /* Confine the drawing to the outer margins. The page then reads as an
+     annotated plate: geometry in the margin, text in the column. */
+  mask-image: linear-gradient(
+    90deg,
+    black 0%,
+    transparent 15%,
+    transparent 85%,
+    black 100%
   );
-  opacity: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  body::after {
-    opacity: 1;
-    animation: scanbar 14s linear infinite;
+.field__hair {
+  fill: none;
+  stroke: var(--ink-12);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.field__mark line {
+  stroke: var(--ink-22);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* --- shell -------------------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 60rem) {
+  .shell {
+    padding-inline: 3rem;
   }
 }
 
-@keyframes scanbar {
-  from {
-    transform: translateY(-45vh);
-  }
-  to {
-    transform: translateY(100vh);
+/* --- masthead ----------------------------------------------------------- */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgb(var(--ground) / 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ink-12);
+}
+
+.masthead__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding: 0.9rem 1.5rem;
+}
+
+@media (min-width: 60rem) {
+  .masthead__inner {
+    padding-inline: 3rem;
   }
 }
 
-/* --- links -------------------------------------------------------------- */
+.masthead nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0.7rem;
+  /* Cancel the first tag's padding so it aligns with the rule above. */
+  margin-inline-end: -0.4rem;
+}
+
+.masthead__mark {
+  margin-inline-end: auto;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(var(--ink));
+  text-decoration: none;
+}
+
+/* --- type ---------------------------------------------------------------- */
+
+.label {
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+}
+
+.prose {
+  max-width: var(--prose);
+}
+
+.prose > * + * {
+  margin-top: 1.1rem;
+}
+
+.prose li + li {
+  margin-top: 0.4rem;
+}
+
+.prose ul {
+  padding-inline-start: 1.1rem;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: rgb(var(--ink));
+}
+
+/* --- links ---------------------------------------------------------------
+   Inversion, not colour. The ink field wipes in from the left; the type goes
+   to ground. `isolation` keeps the pseudo-element behind the text but in
+   front of the page.
+   ----------------------------------------------------------------------- */
 
 a {
-  color: var(--link);
+  color: rgb(var(--ink));
   text-decoration-line: underline;
+  text-decoration-color: var(--ink-22);
   text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
-  transition: color 0.15s ease;
+  text-underline-offset: 0.22em;
+  transition:
+    text-decoration-color 0.16s ease,
+    color 0.16s ease;
 }
 
 a:hover {
-  color: var(--link-hover);
-}
-
-@media (prefers-contrast: more) {
-  a {
-    text-decoration-thickness: 2px;
-    text-underline-offset: 2px;
-  }
+  text-decoration-color: rgb(var(--ink));
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 2px;
+  outline: 1px solid rgb(var(--ink));
+  outline-offset: 3px;
 }
 
-/* Marker for links that leave the site. Inline SVG rather than a Unicode
-   arrow: the latin font subsets have no glyph for U+2197. */
-.ext-arrow {
-  display: inline-block;
-  width: 0.7em;
-  height: 0.7em;
-  margin-inline-start: 0.15em;
-  vertical-align: baseline;
+/* Micro-label links: venues, papers, key files, nav. */
+.tag {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.15em 0.4em;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-70);
+  transition: color 0.18s ease;
+}
+
+.tag::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(var(--ink));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.22s cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+.tag:hover,
+.tag:focus-visible {
+  color: rgb(var(--ground));
+}
+
+.tag:hover::before,
+.tag:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.tag::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0.4em;
+  bottom: 0.05em;
+  height: 1px;
+  background: var(--ink-22);
+  transition: opacity 0.18s ease;
+}
+
+.tag:hover::after,
+.tag:focus-visible::after {
+  opacity: 0;
+}
+
+.tag:focus-visible {
+  outline-offset: 1px;
+}
+
+.ext {
+  width: 0.62em;
+  height: 0.62em;
   fill: none;
   stroke: currentColor;
-  stroke-width: 2.2;
+  stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
+  opacity: 0.7;
 }
 
 /* --- helpers ------------------------------------------------------------ */
@@ -280,254 +372,287 @@ a:hover {
 .skip-link {
   position: absolute;
   z-index: 100;
-  inset-inline-start: 0.5rem;
+  inset-inline-start: 1rem;
   top: -4rem;
-  padding: 0.5rem 0.9rem;
-  background: var(--bg);
-  border: 1px solid var(--accent);
-  color: var(--fg);
+  padding: 0.6rem 1rem;
+  background: rgb(var(--ink));
+  color: rgb(var(--ground));
   font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   text-decoration: none;
-  transition: top 0.15s ease;
+  transition: top 0.16s ease;
 }
 
 .skip-link:focus {
-  top: 0.5rem;
-}
-
-/* --- panel -------------------------------------------------------------
-   The signature motif from the previous site: a faux bevel lit from the
-   top-left (solid top and left edge, faint bottom, no right) over a blurred
-   backdrop. Previously an eight-class string copy-pasted onto every block.
-   ----------------------------------------------------------------------- */
-
-.panel {
-  background: var(--panel);
-  border: 2px solid;
-  border-color: var(--edge-hi) transparent var(--edge-lo) var(--edge-hi);
-  backdrop-filter: blur(12px) brightness(1.03);
-  padding: 1.75rem 1.25rem;
-}
-
-@media (min-width: 48rem) {
-  .panel {
-    backdrop-filter: blur(24px) brightness(1.03);
-    padding: 2.75rem 3rem;
-  }
-}
-
-/* --- shell -------------------------------------------------------------- */
-
-.shell {
-  width: 100%;
-  max-width: var(--measure);
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-
-@media (min-width: 48rem) {
-  .shell {
-    padding-inline: 2rem;
-  }
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  padding-block: 1.5rem 4rem;
-}
-
-@media (min-width: 48rem) {
-  main {
-    gap: 3rem;
-    padding-block: 2.5rem 5rem;
-  }
-}
-
-/* --- nav ---------------------------------------------------------------- */
-
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--panel);
-  border-bottom: 1px solid var(--rule);
-  backdrop-filter: blur(16px) brightness(1.03);
-}
-
-.nav__inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem 1.25rem;
-  max-width: var(--measure);
-  margin-inline: auto;
-  padding: 0.7rem 1rem;
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-}
-
-@media (min-width: 48rem) {
-  .nav__inner {
-    padding-inline: 2rem;
-  }
-}
-
-.nav__home {
-  font-weight: 700;
-  color: var(--fg);
-  text-decoration: none;
-  margin-inline-end: auto;
-}
-
-.nav__home:hover {
-  color: var(--accent);
-}
-
-.nav a {
-  text-decoration: none;
-  color: var(--fg-muted);
-}
-
-.nav a:hover {
-  color: var(--accent);
+  top: 0.75rem;
 }
 
 /* --- hero --------------------------------------------------------------- */
 
-.hero {
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 1.75rem;
+main {
+  padding-block: 0 6rem;
 }
 
-@media (min-width: 48rem) {
+.hero {
+  display: grid;
+  gap: 2.5rem;
+  padding-block: 3.5rem 4.5rem;
+}
+
+@media (min-width: 60rem) {
   .hero {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 3rem;
+    grid-template-columns: minmax(0, 1fr) 21rem;
+    align-items: start;
+    gap: 4rem;
+    padding-block: 6rem 7rem;
   }
 }
 
-.hero__text {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.hero__greeting {
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-  color: var(--accent);
-  margin-bottom: 0.4rem;
+.hero__eyebrow {
+  margin-bottom: 1.4rem;
 }
 
 .hero__name {
-  font-size: clamp(2rem, 7vw, 3.25rem);
-  font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.5rem;
+  font-size: clamp(2.6rem, 8.5vw, 5rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: rgb(var(--ink));
+  text-wrap: balance;
 }
 
 .hero__note {
+  margin-top: 1.1rem;
+  max-width: 26rem;
   font-size: 0.9375rem;
-  color: var(--fg-muted);
-  margin-bottom: 0.75rem;
+  color: var(--ink-60);
 }
 
-.hero__tagline {
-  font-family: var(--mono);
-  font-size: 0.8125rem;
-  color: var(--fg-muted);
+/* Affiliation, as a dimension list against a hairline. */
+.hero__meta {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ink-12);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
   list-style: none;
-  padding: 0;
-  margin-bottom: 1.25rem;
+  padding-inline-start: 0;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-70);
 }
 
-.hero__tagline li::before {
-  content: "> ";
-  color: var(--accent);
+/* A drawn en-dash between items, rather than relying on the gap alone. */
+.hero__meta li + li::before {
+  content: "";
+  display: inline-block;
+  width: 1.1rem;
+  height: 1px;
+  margin-inline-end: 0.85rem;
+  vertical-align: 0.3em;
+  background: var(--ink-22);
 }
 
-.hero__bio > * + * {
-  margin-top: 0.85rem;
+.hero__bio {
+  margin-top: 2.25rem;
 }
 
-/* Photo. Fixed aspect box so nothing reflows while the image decodes. */
 .hero__figure {
-  flex: 0 0 auto;
   margin: 0;
-  width: min(15rem, 60vw);
+  justify-self: center;
 }
 
-.hero__figure img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border: 2px solid;
-  border-color: var(--edge-hi) transparent var(--edge-lo) var(--edge-hi);
-  box-shadow: var(--shadow);
+@media (min-width: 60rem) {
+  .hero__figure {
+    justify-self: end;
+  }
 }
 
 .hero__credit {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   font-family: var(--mono);
-  font-size: 0.6875rem;
-  color: var(--fg-muted);
-  text-align: right;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+  text-align: center;
 }
 
-/* --- section headings --------------------------------------------------- */
-
-.section-head {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
-  font-family: var(--mono);
-  font-size: 0.9375rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--accent);
+@media (min-width: 60rem) {
+  .hero__credit {
+    text-align: right;
+  }
 }
 
-.section-head::before {
-  content: "##";
-  opacity: 0.55;
+/* --- the plot ----------------------------------------------------------- */
+
+.plot {
+  position: relative;
+  width: min(21rem, 78vw);
+  aspect-ratio: 1;
 }
 
-.section-head::after {
-  content: "";
-  flex: 1 1 auto;
-  height: 1px;
-  background: var(--rule);
+.plot__plate {
+  position: absolute;
+  left: var(--l);
+  top: var(--t);
+  width: var(--w);
+  height: var(--h);
+  clip-path: var(--clip);
+  /* Grey the portrait down so it reads as part of the drawing, not a photo
+     dropped into it. Restored on hover. */
+  filter: grayscale(1) contrast(1.06);
+  transition: filter 0.5s ease;
 }
 
-/* --- entries (publications and talks) ----------------------------------- */
+.plot:hover .plot__plate {
+  filter: grayscale(0.15) contrast(1);
+}
+
+.plot__plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.plot__ink {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.plot__hair {
+  fill: none;
+  stroke: var(--ink-45);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.plot__edge {
+  fill: none;
+  stroke: rgb(var(--ink));
+  stroke-width: 1.25;
+  vector-effect: non-scaling-stroke;
+}
+
+.plot__node {
+  fill: rgb(var(--ink));
+}
+
+.plot__spin {
+  transform-box: view-box;
+  transform-origin: center;
+}
+
+/* --- section rail -------------------------------------------------------
+   A continuous hairline down the left with the labels hung off it. The notch
+   marks where each section begins.
+   ----------------------------------------------------------------------- */
+
+.section {
+  padding-block: 3rem;
+  border-top: 1px solid var(--ink-12);
+}
+
+@media (min-width: 60rem) {
+  .section {
+    display: grid;
+    grid-template-columns: var(--rail) minmax(0, 1fr);
+    gap: 2.5rem;
+    padding-block: 4.5rem;
+  }
+}
+
+.section__label {
+  position: relative;
+  margin-bottom: 1.75rem;
+}
+
+@media (min-width: 60rem) {
+  .section__label {
+    margin-bottom: 0;
+    /* Align the label's cap height with the first line of the body. */
+    margin-top: 0.42rem;
+  }
+}
+
+.section__body {
+  min-width: 0;
+}
+
+.mark {
+  display: none;
+  width: 54px;
+  height: 54px;
+  margin-top: 1.1rem;
+  overflow: visible;
+}
+
+@media (min-width: 60rem) {
+  .mark {
+    display: block;
+  }
+}
+
+.mark__hair {
+  fill: none;
+  stroke: var(--ink-22);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.mark__edge {
+  fill: none;
+  stroke: var(--ink-45);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.mark__node {
+  fill: var(--ink-45);
+}
+
+/* --- entries ------------------------------------------------------------ */
 
 .entries {
-  display: flex;
-  flex-direction: column;
-  gap: 1.75rem;
   list-style: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
 }
 
 .entry {
   display: grid;
-  grid-template-columns: var(--gutter) minmax(0, 1fr);
-  column-gap: 1.25rem;
+  gap: 0.15rem 1.5rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 40rem) {
+  .entry {
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+  }
 }
 
 .entry__year {
   font-family: var(--mono);
-  font-size: 0.8125rem;
-  color: var(--fg-muted);
-  padding-top: 0.3rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-70);
+  padding-top: 0.42rem;
+}
+
+@media (max-width: 39.99rem) {
+  .entry__year {
+    padding-top: 0;
+  }
 }
 
 .entry__body {
@@ -537,218 +662,175 @@ main {
 .entry__title {
   font-size: 1.1875rem;
   font-weight: 500;
-  line-height: 1.35;
+  line-height: 1.32;
+  letter-spacing: -0.012em;
+  color: rgb(var(--ink));
+  text-wrap: pretty;
 }
 
-.entry__authors,
-.entry__venue {
+.entry__authors {
+  margin-top: 0.3rem;
   font-size: 0.9375rem;
-  color: var(--fg-muted);
+  font-weight: 350;
+  color: var(--ink-60);
 }
 
 .entry__authors strong {
   font-weight: 600;
-  color: var(--fg);
+  color: rgb(var(--ink));
 }
 
 .entry__venue {
+  margin-top: 0.45rem;
   font-family: var(--mono);
-  font-size: 0.8125rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-70);
 }
 
-@media (max-width: 47.99rem) {
-  .entry {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .entry__year {
-    padding-top: 0;
-    order: -1;
-  }
-}
-
-/* Bracketed link lists — [ePrint] [paper] [blog]. Brackets live on the <li>
-   so they are not read out as part of the link text. */
-.linklist {
+.entry__links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 0.75rem;
+  gap: 0.1rem 0.35rem;
   list-style: none;
   padding: 0;
-  margin-top: 0.5rem;
-  font-family: var(--mono);
-  font-size: 0.8125rem;
+  margin-top: 0.7rem;
+  /* Pull the first tag back so its padding does not read as an indent. */
+  margin-inline-start: -0.4rem;
 }
 
-/* Flex on the <li> so the brackets sit tight against the label: a flex
-   container discards whitespace-only anonymous items, which is what the
-   newlines around the <a> in the template would otherwise become. */
-.linklist li {
-  display: flex;
-  align-items: baseline;
-}
-
-.linklist li::before {
-  content: "[";
-  color: var(--fg-muted);
-}
-
-.linklist li::after {
-  content: "]";
-  color: var(--fg-muted);
-}
-
-/* Block container, so the newlines the formatter puts around the label are
-   trimmed as leading/trailing line whitespace rather than showing as gaps
-   inside the brackets. */
-.linklist a {
-  display: block;
-  text-decoration: none;
-}
-
-.linklist a:hover {
-  text-decoration: underline;
-}
-
-/* --- abstracts (native <details>, no JS) -------------------------------- */
+/* --- abstracts ---------------------------------------------------------- */
 
 .abstract {
-  margin-top: 0.75rem;
+  margin-top: 0.7rem;
 }
 
 .abstract > summary {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
   width: fit-content;
   cursor: pointer;
   list-style: none;
   font-family: var(--mono);
-  font-size: 0.8125rem;
-  color: var(--fg-muted);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+  transition: color 0.16s ease;
 }
 
 .abstract > summary::-webkit-details-marker {
   display: none;
 }
 
-/* CSS-drawn caret: no dependency on a glyph outside the font subset. */
-.abstract > summary::before {
-  content: "";
-  width: 0;
-  height: 0;
-  border-left: 5px solid currentColor;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-  transition: transform 0.15s ease;
-}
-
-.abstract[open] > summary::before {
-  transform: rotate(90deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .abstract > summary::before {
-    transition: none;
-  }
-}
-
 .abstract > summary:hover {
-  color: var(--accent);
+  color: rgb(var(--ink));
+}
+
+/* A plus that becomes a minus — drawn, so it needs no glyph. */
+.abstract__sign {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  flex: none;
+}
+
+.abstract__sign::before,
+.abstract__sign::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 1px;
+  background: currentColor;
+}
+
+.abstract__sign::after {
+  transform: rotate(90deg);
+  transition: transform 0.24s cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+
+.abstract[open] .abstract__sign::after {
+  transform: rotate(0deg);
 }
 
 .abstract__body {
-  margin-top: 0.75rem;
-  padding: 1rem 1.1rem;
-  border-inline-start: 2px solid var(--rule);
+  margin-top: 1rem;
+  padding-inline-start: 1.25rem;
+  border-inline-start: 1px solid var(--ink-22);
   font-size: 1rem;
-  color: var(--fg-muted);
+  color: var(--ink-60);
+  max-width: var(--prose);
 }
 
 .abstract__body > * + * {
-  margin-top: 0.8rem;
+  margin-top: 0.9rem;
 }
 
-/* --- prose -------------------------------------------------------------- */
-
-.prose > * + * {
-  margin-top: 1rem;
-}
-
-.prose li + li {
-  margin-top: 0.35rem;
-}
-
-.prose strong {
-  font-weight: 600;
-}
-
-/* --- public keys -------------------------------------------------------- */
+/* --- keys --------------------------------------------------------------- */
 
 .keys {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
+  gap: 2.5rem;
 }
 
 .key__title {
   font-family: var(--mono);
-  font-size: 0.9375rem;
-  font-weight: 700;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(var(--ink));
 }
 
 .key__fingerprint {
+  margin-top: 0.35rem;
   font-family: var(--mono);
   font-size: 0.75rem;
-  color: var(--fg-muted);
+  color: var(--ink-70);
   word-break: break-all;
 }
 
 .key__block {
-  margin-top: 0.6rem;
-  padding: 0.85rem 1rem;
+  margin-top: 0.9rem;
+  padding: 1rem 1.1rem;
   overflow-x: auto;
-  background: var(--panel);
-  border: 1px solid var(--rule);
+  border: 1px solid var(--ink-12);
   font-family: var(--mono);
   font-size: 0.6875rem;
-  line-height: 1.6;
+  line-height: 1.75;
+  color: var(--ink-70);
   white-space: pre;
-  tab-size: 2;
 }
 
 /* --- footer ------------------------------------------------------------- */
 
 .footer {
-  border-top: 1px solid var(--rule);
-  padding-block: 1.5rem 2.5rem;
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  color: var(--fg-muted);
+  border-top: 1px solid var(--ink-12);
+  padding-block: 2rem 3rem;
 }
 
 .footer__inner {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  max-width: var(--measure);
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  max-width: var(--shell);
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: 1.5rem;
+  font-family: var(--mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-70);
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 60rem) {
   .footer__inner {
-    padding-inline: 2rem;
+    padding-inline: 3rem;
   }
-}
-
-.footer a {
-  color: var(--fg-muted);
-  text-decoration: none;
-}
-
-.footer a:hover {
-  color: var(--accent);
 }
 
 .footer__spacer {
@@ -758,27 +840,159 @@ main {
 /* --- 404 ---------------------------------------------------------------- */
 
 .notfound {
-  text-align: center;
-  padding-block: 3rem;
+  padding-block: 7rem;
+  max-width: var(--prose);
 }
 
 .notfound__code {
   font-family: var(--mono);
-  font-size: clamp(3rem, 14vw, 6rem);
-  font-weight: 700;
+  font-size: clamp(3.5rem, 16vw, 7rem);
   line-height: 1;
-  color: var(--accent);
+  letter-spacing: -0.02em;
+  color: rgb(var(--ink));
+}
+
+/* ==========================================================================
+   Motion
+
+   One orchestrated moment on load: the drawing assembles, stroke by stroke.
+   After that the page is almost still — two rings turn slowly enough that you
+   only notice on a second look. Interaction is the inversion wipe.
+   ========================================================================== */
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ink-in {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .plot__draw {
+    stroke-dasharray: 1;
+    animation: draw 900ms cubic-bezier(0.45, 0, 0.2, 1) both;
+    animation-delay: var(--d, 0ms);
+  }
+
+  .plot__node {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: ink-in 420ms cubic-bezier(0.2, 0.85, 0.25, 1) both;
+    animation-delay: calc(var(--d, 0ms) + 260ms);
+  }
+
+  .plot__spin--slow {
+    animation: turn 240s linear infinite;
+  }
+
+  .plot__spin--fast {
+    animation: turn 150s linear infinite reverse;
+  }
+
+  .hero__eyebrow,
+  .hero__name,
+  .hero__note,
+  .hero__meta,
+  .hero__bio {
+    animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .hero__name {
+    animation-delay: 60ms;
+  }
+  .hero__note {
+    animation-delay: 140ms;
+  }
+  .hero__meta {
+    animation-delay: 200ms;
+  }
+  .hero__bio {
+    animation-delay: 260ms;
+  }
+
+  /* Scroll-linked reveal where the browser supports it; a no-op elsewhere,
+     which leaves the content plainly visible. */
+  @supports (animation-timeline: view()) {
+    .section__body,
+    .section__label {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 42%;
+    }
+
+    .mark__draw {
+      stroke-dasharray: 1;
+      animation: draw linear both;
+      animation-timeline: view();
+      animation-range: entry 8% entry 55%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .abstract__sign::after {
+    transition: none;
+  }
+
+  .tag::before {
+    transition: none;
+  }
 }
 
 /* --- print -------------------------------------------------------------- */
 
 @media print {
   body::before,
-  body::after,
-  .nav,
+  .field,
+  .masthead,
   .skip-link,
-  .footer {
+  .footer,
+  .plot__ink,
+  .mark {
     display: none !important;
+  }
+
+  /* The scroll-linked reveal starts at opacity 0; make sure nothing can be
+     left invisible on paper. */
+  .section__body,
+  .section__label {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   body {
@@ -787,20 +1001,11 @@ main {
     font-size: 11pt;
   }
 
-  .panel {
-    background: none;
-    border: none;
-    backdrop-filter: none;
-    padding: 0;
+  .section {
+    display: block;
+    padding-block: 1.25rem;
   }
 
-  main {
-    gap: 1.5rem;
-  }
-
-  /* Abstracts are collapsed on screen; print them all. `::details-content`
-     is the standards-track way to reveal a closed <details>. Where it is
-     unsupported the abstract simply stays collapsed on paper. */
   .abstract::details-content {
     content-visibility: visible;
     block-size: auto;
@@ -812,14 +1017,15 @@ main {
 
   .abstract__body {
     color: #000;
-    border-inline-start: none;
+    border: none;
     padding: 0;
   }
 
-  /* Spell out where links go on paper. */
-  .linklist a::after {
+  .entry__links a::after {
     content: " " attr(href);
     font-size: 8pt;
+    letter-spacing: 0;
+    text-transform: none;
     word-break: break-all;
   }
 

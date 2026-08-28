@@ -1,0 +1,154 @@
+---
+import { Picture } from "astro:assets";
+import {
+  rng,
+  between,
+  irregularPolygon,
+  pointsAttr,
+  brokenRing,
+  tickRing,
+  leaders,
+  type Point,
+} from "../lib/geom";
+
+interface Props {
+  /** Alt text for the portrait. */
+  alt: string;
+  /** Image to place inside the polygon. */
+  src: ImageMetadata;
+  /** Changing this re-rolls the whole construction. */
+  seed: number;
+}
+
+const { alt, src, seed }: Props = Astro.props;
+
+const BOX = 320;
+const C = BOX / 2;
+const r = rng(seed);
+
+// The plate the portrait is cut to, and the construction around it.
+const plate: Point[] = irregularPolygon(r, C, C, 84, 7, 0.075);
+const ring = brokenRing(r, C, C, 103, 5);
+const ticks = tickRing(r, C, C, 122, 44, 4.5);
+const rays = leaders(r, C, C, plate, 118, 3);
+
+// The portrait only needs to cover the plate's bounding box, not the whole
+// plot, so the image request stays small.
+const xs = plate.map((p) => p.x);
+const ys = plate.map((p) => p.y);
+const bbox = {
+  x: Math.min(...xs),
+  y: Math.min(...ys),
+  w: Math.max(...xs) - Math.min(...xs),
+  h: Math.max(...ys) - Math.min(...ys),
+};
+
+const pct = (n: number) => `${Math.round(n * 1000) / 10}%`;
+
+// Same vertices as the SVG polygon, expressed relative to the image box so
+// the cut and the drawn outline line up exactly.
+const clip = plate
+  .map((p) => `${pct((p.x - bbox.x) / bbox.w)} ${pct((p.y - bbox.y) / bbox.h)}`)
+  .join(", ");
+
+const frame = {
+  left: pct(bbox.x / BOX),
+  top: pct(bbox.y / BOX),
+  width: pct(bbox.w / BOX),
+  height: pct(bbox.h / BOX),
+};
+
+/** Staggered start times, so the drawing assembles rather than appearing. */
+let step = 0;
+const delay = () => `${(step++ * 42 + between(r, 0, 30)).toFixed(0)}ms`;
+---
+
+<div class="plot">
+  <div
+    class="plot__plate"
+    style={`--clip: polygon(${clip}); --l:${frame.left}; --t:${frame.top}; --w:${frame.width}; --h:${frame.height}`}
+  >
+    <Picture
+      src={src}
+      formats={["avif", "webp"]}
+      widths={[200, 400]}
+      width={400}
+      sizes="(min-width: 60rem) 200px, 42vw"
+      alt={alt}
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+
+  <svg
+    class="plot__ink"
+    viewBox={`0 0 ${BOX} ${BOX}`}
+    aria-hidden="true"
+    focusable="false"
+  >
+    {/* graduated dial, turning one way */}
+    <g class="plot__spin plot__spin--slow">
+      {
+        ticks.map((t) => (
+          <line
+            x1={t.x1}
+            y1={t.y1}
+            x2={t.x2}
+            y2={t.y2}
+            pathLength="1"
+            class="plot__hair plot__draw"
+            style={`--d:${delay()}`}
+          />
+        ))
+      }
+    </g>
+
+    {/* broken ring, turning the other */}
+    <g class="plot__spin plot__spin--fast">
+      {
+        ring.map((d) => (
+          <path
+            d={d}
+            pathLength="1"
+            class="plot__hair plot__draw"
+            style={`--d:${delay()}`}
+          />
+        ))
+      }
+    </g>
+
+    {/* construction lines off three vertices */}
+    {
+      rays.map((l) => (
+        <line
+          x1={l.x1}
+          y1={l.y1}
+          x2={l.x2}
+          y2={l.y2}
+          pathLength="1"
+          class="plot__hair plot__draw"
+          style={`--d:${delay()}`}
+        />
+      ))
+    }
+
+    {/* the plate outline, over the portrait's cut edge */}
+    <polygon
+      points={pointsAttr(plate)}
+      pathLength="1"
+      class="plot__edge plot__draw"
+      style={`--d:${delay()}`}></polygon>
+
+    {
+      plate.map((p) => (
+        <circle
+          cx={p.x}
+          cy={p.y}
+          r="1.7"
+          class="plot__node"
+          style={`--d:${delay()}`}
+        />
+      ))
+    }
+  </svg>
+</div>

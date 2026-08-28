@@ -3,16 +3,22 @@ import { NAV } from "../config";
 import ExtArrow from "./ExtArrow.astro";
 ---
 
-<nav class="nav" aria-label="Primary">
-  <div class="nav__inner">
-    <a class="nav__home" href="/">ktruong.dev</a>
-    {
-      NAV.map((item) => (
-        <a href={item.href} rel={item.external ? "noopener" : undefined}>
-          {item.label}
-          {item.external && <ExtArrow />}
-        </a>
-      ))
-    }
+<header class="masthead">
+  <div class="masthead__inner">
+    <a class="masthead__mark" href="/">ktruong.dev</a>
+    <nav aria-label="Primary">
+      {
+        NAV.map((item) => (
+          <a
+            class="tag"
+            href={item.href}
+            rel={item.external ? "noopener" : undefined}
+          >
+            {item.label}
+            {item.external && <ExtArrow />}
+          </a>
+        ))
+      }
+    </nav>
   </div>
-</nav>
+</header>

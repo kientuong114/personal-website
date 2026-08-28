@@ -1,14 +1,13 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
-import { Picture } from "astro:assets";
 
 import Base from "../layouts/Base.astro";
-import Panel from "../components/Panel.astro";
-import SectionHeader from "../components/SectionHeader.astro";
+import Section from "../components/Section.astro";
 import Publication from "../components/Publication.astro";
 import Talk from "../components/Talk.astro";
+import Plot from "../components/Plot.astro";
 import propic from "../assets/propic.jpg";
-import { SITE } from "../config";
+import { SITE, SEED } from "../config";
 
 const home = await getEntry("pages", "home");
 if (!home) throw new Error("src/content/pages/home.md is missing");
@@ -40,103 +39,74 @@ const sections = await Promise.all(
 ---
 
 <Base>
-  {/* --- hero --- */}
-  <Panel labelledby="name">
-    <div class="hero">
-      <div class="hero__text">
-        {
-          home.data.greeting && (
-            <p class="hero__greeting">{home.data.greeting}</p>
-          )
-        }
+  <div class="hero">
+    <div class="hero__text">
+      {
+        home.data.greeting && (
+          <p class="label hero__eyebrow">{home.data.greeting}</p>
+        )
+      }
 
-        <h1 class="hero__name" id="name">{home.data.title}</h1>
+      <h1 class="hero__name">{home.data.title}</h1>
 
-        {home.data.nameNote && <p class="hero__note">{home.data.nameNote}</p>}
+      {home.data.nameNote && <p class="hero__note">{home.data.nameNote}</p>}
 
-        {
-          home.data.tagline.length > 0 && (
-            <ul class="hero__tagline">
-              {home.data.tagline.map((line) => (
-                <li>{line}</li>
-              ))}
-            </ul>
-          )
-        }
+      {
+        home.data.tagline.length > 0 && (
+          <ul class="hero__meta">
+            {home.data.tagline.map((line) => (
+              <li>{line}</li>
+            ))}
+          </ul>
+        )
+      }
 
-        <div class="hero__bio prose">
-          <Bio />
-        </div>
+      <div class="hero__bio prose">
+        <Bio />
       </div>
-
-      <figure class="hero__figure">
-        {
-          /* `width` caps the <img> fallback so the full 1117px original is
-            never emitted; CSS gives the box its 1:1 crop. */
-        }
-        <Picture
-          src={propic}
-          formats={["avif", "webp"]}
-          widths={[240, 480]}
-          width={480}
-          sizes="(min-width: 48rem) 240px, min(15rem, 60vw)"
-          alt={SITE.name}
-          loading="eager"
-          decoding="async"
-        />
-        {
-          home.data.photoCredit && (
-            <figcaption class="hero__credit">
-              {home.data.photoCredit}
-            </figcaption>
-          )
-        }
-      </figure>
     </div>
-  </Panel>
 
-  {/* --- publications --- */}
-  <Panel id="publications" labelledby="publications-head">
-    <SectionHeader id="publications-head">publications</SectionHeader>
+    <figure class="hero__figure">
+      <Plot src={propic} alt={SITE.name} seed={SEED} />
+      {
+        home.data.photoCredit && (
+          <figcaption class="hero__credit">{home.data.photoCredit}</figcaption>
+        )
+      }
+    </figure>
+  </div>
+
+  <Section id="publications" title="Publications">
     <ol class="entries">
       {publications.map((entry) => <Publication entry={entry} />)}
     </ol>
-  </Panel>
+  </Section>
 
-  {/* --- talks --- */}
-  <Panel id="talks" labelledby="talks-head">
-    <SectionHeader id="talks-head">talks</SectionHeader>
+  <Section id="talks" title="Talks">
     <ol class="entries">
       {talks.map((entry) => <Talk entry={entry} />)}
     </ol>
-  </Panel>
+  </Section>
 
   {
-    /* Workshops are a sibling section, not nested under talks, so the entry
-      titles in both stay at the same heading level. */
-  }
-  {
     workshops.length > 0 && (
-      <Panel id="workshops" labelledby="workshops-head">
-        <SectionHeader id="workshops-head">workshops</SectionHeader>
+      <Section id="workshops" title="Workshops">
         <ol class="entries">
           {workshops.map((entry) => (
             <Talk entry={entry} />
           ))}
         </ol>
-      </Panel>
+      </Section>
     )
   }
 
-  {/* --- prose sections --- */}
   {
     sections.map(({ id, title, Content }) => (
-      <Panel id={id} labelledby={`${id}-head`}>
-        <SectionHeader id={`${id}-head`}>{title}</SectionHeader>
+      <Section id={id} title={title}>
         <div class="prose">
           <Content />
         </div>
-      </Panel>
+      </Section>
     ))
   }
 </Base>

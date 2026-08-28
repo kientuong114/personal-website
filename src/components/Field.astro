@@ -1,0 +1,49 @@
+---
+import { rng, between, fieldArcs, brokenRing } from "../lib/geom";
+
+interface Props {
+  seed: number;
+}
+
+const { seed }: Props = Astro.props;
+
+const W = 1600;
+const H = 1000;
+const r = rng(seed);
+
+// A few very large arcs, so only a shallow curve crosses the page.
+const arcs = fieldArcs(r, W, H, 5);
+
+// One ring parked mostly off-canvas, bottom right.
+const ring = brokenRing(r, W * 0.94, H * 0.86, 420, 6);
+
+// Registration crosses, as on a plate that has been aligned by hand. Kept in
+// the outer margins so they never land on top of running text.
+const marks = Array.from({ length: 4 }, (_, i) => ({
+  x: (i % 2 === 0 ? between(r, 0.03, 0.11) : between(r, 0.89, 0.97)) * W,
+  y: between(r, 0.08, 0.92) * H,
+  a: between(r, -8, 8),
+}));
+---
+
+<svg
+  class="field"
+  viewBox={`0 0 ${W} ${H}`}
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+>
+  {arcs.map((d) => <path d={d} class="field__hair" />)}
+  {ring.map((d) => <path d={d} class="field__hair" />)}
+  {
+    marks.map((m) => (
+      <g
+        class="field__mark"
+        transform={`translate(${m.x.toFixed(1)} ${m.y.toFixed(1)}) rotate(${m.a.toFixed(1)})`}
+      >
+        <line x1="-7" y1="0" x2="7" y2="0" />
+        <line x1="0" y1="-7" x2="0" y2="7" />
+      </g>
+    ))
+  }
+</svg>

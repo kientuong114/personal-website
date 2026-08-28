@@ -83,26 +83,70 @@ Rotating a key means replacing the file — no markup changes.
 
 ```
 src/
-  config.ts           site metadata, nav, the name to bold in author lists
+  config.ts           site metadata, nav, the author name to bold, SEED
   content.config.ts   frontmatter schemas (a bad date or URL fails the build)
   content/            all the content, as markdown
+  lib/geom.ts         the seeded geometry generator
   components/         .astro partials
-  layouts/Base.astro  <head>, nav, footer
+  layouts/Base.astro  <head>, masthead, field, footer
   pages/              index, contact, 404, /keys/<file>
   styles/global.css   the entire design system
   assets/propic.jpg   processed at build into avif/webp
-tools/                og.svg + build-og.sh for the social preview image
+tools/                og.mjs + build-og.sh for the social card
 ```
 
-Everything visual is in `src/styles/global.css`: colour tokens at the top
-(light, then a `prefers-color-scheme: dark` phosphor-terminal palette, then a
-`prefers-contrast: more` pass), then the panel motif, then components.
+## Design
 
-Regenerate `public/og.png` after editing the tagline in `tools/og.svg`:
+Two colours, swapped. `--ink` and `--ground` are the whole palette; dark mode
+exchanges the same two values, and there is no accent. Emphasis is carried by
+**inversion** — a hovered link fills with ink and its type goes to ground.
+
+Everything visual lives in `src/styles/global.css`, in order: the two faces,
+the tokens (light, then the `prefers-color-scheme: dark` swap, then a
+`prefers-contrast: more` pass), then components.
+
+When picking a colour for type, use `--ink-60` or stronger. The steps are
+measured against the light ground: 60% is 4.89:1, 70% is 6.90:1. `--ink-45` is
+3.04:1 and fails WCAG AA — it is for hairlines and stroke work only.
+
+### The geometry
+
+The line work is generated at build time by `src/lib/geom.ts`: shapes are
+constructed precisely, then every radius, angle and length is knocked out of
+true. It is seeded, so the drawing is deterministic and the built HTML is
+reproducible. Change `SEED` in `src/config.ts` to re-roll everything at once —
+the hero construction, the background field, and each section's margin mark.
+
+Three things use it:
+
+| Component     | What it draws                                                                           |
+| ------------- | --------------------------------------------------------------------------------------- |
+| `Plot.astro`  | the hero construction; the portrait is CSS-clipped to the same polygon the SVG outlines |
+| `Field.astro` | large arcs and registration marks, masked to the outer margins                          |
+| `Mark.astro`  | a small mark per section, seeded from the section id                                    |
+
+Nothing runs in the browser — it all renders to static SVG.
+
+### Motion
+
+One orchestrated moment on load: the hero construction draws itself stroke by
+stroke via `pathLength="1"` and `stroke-dashoffset`, staggered per element.
+After that the page is nearly still — two rings turn on 150s and 240s cycles.
+Interaction is the inversion wipe. Section marks draw as they scroll into view
+where `animation-timeline: view()` is supported, and are simply visible where it
+is not. All of it sits inside `prefers-reduced-motion: no-preference`.
+
+### The social card
+
+`public/og.png` is drawn from the same geometry library and seed as the site, so
+it cannot drift from the hero:
 
 ```sh
-./tools/build-og.sh   # needs rsvg-convert + ImageMagick
+./tools/build-og.sh
 ```
+
+Needs node >= 22, `rsvg-convert`, ImageMagick, and Bricolage Grotesque + DM Mono
+installed system-wide. `tools/og.svg` is generated output, not a source file.
 
 ## Deployment
 

@@ -1,0 +1,59 @@
+---
+import {
+  rng,
+  between,
+  irregularPolygon,
+  pointsAttr,
+  tickRing,
+  type Point,
+} from "../lib/geom";
+
+interface Props {
+  /** Distinguishes this mark from the others; hashed into the seed. */
+  key: string;
+  seed: number;
+}
+
+const { key, seed }: Props = Astro.props;
+
+/** djb2, so each section gets its own draw from the same system. */
+function hash(s: string): number {
+  let h = 5381;
+  for (let i = 0; i < s.length; i++) h = (h * 33 + s.charCodeAt(i)) >>> 0;
+  return h;
+}
+
+const BOX = 54;
+const C = BOX / 2;
+const r = rng((seed ^ hash(key)) >>> 0);
+
+const sides = Math.floor(between(r, 4, 7));
+const shape: Point[] = irregularPolygon(r, C, C, 13, sides, 0.16);
+const ticks = tickRing(r, C, C, 20, 9, 2.2, 3);
+const node = shape[Math.floor(r() * shape.length)]!;
+---
+
+<svg
+  class="mark"
+  viewBox={`0 0 ${BOX} ${BOX}`}
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    ticks.map((t) => (
+      <line
+        x1={t.x1}
+        y1={t.y1}
+        x2={t.x2}
+        y2={t.y2}
+        pathLength="1"
+        class="mark__hair mark__draw"
+      />
+    ))
+  }
+  <polygon
+    points={pointsAttr(shape)}
+    pathLength="1"
+    class="mark__edge mark__draw"></polygon>
+  <circle cx={node.x} cy={node.y} r="1.5" class="mark__node"></circle>
+</svg>

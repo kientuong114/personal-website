@@ -14,6 +14,13 @@ export const SITE = {
   locale: "en",
 } as const;
 
+/**
+ * Seed for the generated line work (see src/lib/geom.ts). The drawing is
+ * deterministic, so builds are reproducible; change this number to re-roll
+ * the whole composition — the hero construction and the background field.
+ */
+export const SEED = 20260828;
+
 export type NavItem = {
   label: string;
   href: string;

@@ -33,7 +33,10 @@ const { Content } = await render(entry);
     {
       hasAbstract && (
         <details class="abstract">
-          <summary>abstract</summary>
+          <summary>
+            <span class="abstract__sign" aria-hidden="true" />
+            abstract
+          </summary>
           <div class="abstract__body prose">
             <Content />
           </div>
