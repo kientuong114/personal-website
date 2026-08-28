@@ -1,0 +1,56 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import Course from "../components/Course.astro";
+import Supervision from "../components/Supervision.astro";
+
+const page = await getEntry("pages", "teaching");
+if (!page) throw new Error("src/content/pages/teaching.md is missing");
+const { Content } = await render(page);
+
+const byDateDesc = (a: { data: { date: Date } }, b: { data: { date: Date } }) =>
+  b.data.date.valueOf() - a.data.date.valueOf();
+
+const courses = (
+  await getCollection("courses", ({ data }) => !data.draft)
+).sort(byDateDesc);
+
+const supervision = (
+  await getCollection("supervision", ({ data }) => !data.draft)
+).sort(byDateDesc);
+---
+
+<Base
+  title="Teaching"
+  description="Courses taught and students supervised by Kien Tuong Truong."
+>
+  <Section as="h1" id="teaching" title="Teaching">
+    <div class="prose">
+      <Content />
+    </div>
+
+    {
+      courses.length > 0 && (
+        <ol class="entries" style="margin-top:2.5rem">
+          {courses.map((entry) => (
+            <Course entry={entry} />
+          ))}
+        </ol>
+      )
+    }
+  </Section>
+
+  {
+    supervision.length > 0 && (
+      <Section id="supervision" title="Supervision">
+        <ol class="entries">
+          {supervision.map((entry) => (
+            <Supervision entry={entry} />
+          ))}
+        </ol>
+      </Section>
+    )
+  }
+</Base>

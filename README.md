@@ -95,6 +95,44 @@ date: 2026-05-01
 Use `links` for anything that is not a venue — an event website, a report. The
 gutter shows the most recent year across the entry's venues.
 
+## Adding teaching and supervision
+
+Both feed `/teaching`. There are copy-paste starting points at
+`src/content/courses/_template.md` and `src/content/supervision/_template.md` —
+copy one, drop the `draft: true` line, and fill it in.
+
+A course takes one `terms` entry per time it was taught, each optionally
+linked:
+
+```markdown
+---
+course: Applied Cryptography
+role: Teaching Assistant # optional
+institution: ETH Zurich # optional
+terms:
+  - { name: Autumn, year: 2025, url: "https://..." }
+  - { name: Autumn, year: 2024 }
+date: 2025-09-01 # sort key only
+---
+```
+
+A supervised student is filed under their own name, with the project as the
+subtitle. `projectUrl` turns the project title into the link to the thesis:
+
+```markdown
+---
+student: A. Student
+project: Title of the thesis
+projectUrl: "https://..." # optional
+kind: Master's thesis # optional
+coAdvisors: [Another Advisor] # optional; rendered "co-advised with ..."
+date: 2025-06-01 # sort key, and the year in the gutter
+---
+```
+
+Either section disappears entirely when it has no entries, so the page is
+fine to ship half-filled.
+
 ## Editing the prose
 
 | What                           | Where                                                    |

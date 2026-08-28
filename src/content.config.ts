@@ -81,6 +81,51 @@ const service = defineCollection({
   }),
 });
 
+/**
+ * Courses taught. `terms` works like service venues: several of them on one
+ * entry covers a course taught more than once, and each can carry its own url.
+ */
+const courses = defineCollection({
+  loader: glob({ base: "./src/content/courses", pattern: "**/*.md" }),
+  schema: z.object({
+    course: z.string(),
+    /** e.g. "Teaching Assistant", "Head TA", "Guest lecturer". */
+    role: z.string().optional(),
+    institution: z.string().optional(),
+    terms: z
+      .array(
+        z.object({
+          name: z.string(), // "Autumn", "Spring", "Summer term"
+          year: z.number().int().min(1990).max(2100),
+          url: z.url({ protocol: /^https?$/ }).optional(),
+        }),
+      )
+      .nonempty(),
+    /** Sort key. Approximate is fine — only the ordering matters. */
+    date: z.coerce.date(),
+    links: z.array(link).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+/** Students supervised, and what they worked on. */
+const supervision = defineCollection({
+  loader: glob({ base: "./src/content/supervision", pattern: "**/*.md" }),
+  schema: z.object({
+    student: z.string(),
+    project: z.string(),
+    /** Link to the thesis; the project title becomes the link. */
+    projectUrl: z.url({ protocol: /^https?$/ }).optional(),
+    /** e.g. "Master's thesis", "Semester project". */
+    kind: z.string().optional(),
+    coAdvisors: z.array(z.string()).default([]),
+    /** Sort key, and the year shown in the gutter. */
+    date: z.coerce.date(),
+    links: z.array(link).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
 /** Prose blocks appended to the home page, in `order`. */
 const sections = defineCollection({
   loader: glob({ base: "./src/content/sections", pattern: "**/*.md" }),
@@ -117,4 +162,12 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { publications, talks, service, sections, pages };
+export const collections = {
+  publications,
+  talks,
+  service,
+  courses,
+  supervision,
+  sections,
+  pages,
+};

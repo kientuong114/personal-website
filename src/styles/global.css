@@ -781,6 +781,24 @@ main {
   transform-origin: left center;
 }
 
+/* The project a supervised student worked on: reads as the subtitle to their
+   name, in prose rather than the mono metadata voice. */
+.entry__project {
+  margin-top: 0.3rem;
+  font-size: 0.9375rem;
+  color: var(--ink-60);
+}
+
+.entry__project a {
+  color: inherit;
+  text-decoration-color: var(--ink-22);
+}
+
+.entry__project a:hover {
+  color: rgb(var(--ink));
+  text-decoration-color: rgb(var(--ink));
+}
+
 /* Venue list: like .entry__venue, but each venue can be its own link. */
 .entry__venues {
   display: flex;

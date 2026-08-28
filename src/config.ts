@@ -33,6 +33,7 @@ export const NAV: NavItem[] = [
   { label: "publications", href: "/#publications" },
   { label: "talks", href: "/#talks" },
   { label: "about", href: "/#about" },
+  { label: "teaching", href: "/teaching" },
   { label: "contact", href: "/contact" },
   { label: "blog", href: SITE.blog, external: true },
 ];

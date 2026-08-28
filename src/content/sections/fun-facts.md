@@ -1,7 +1,7 @@
 ---
 title: Fun Facts
 anchor: fun-facts
-order: 2
+order: 3
 ---
 
 - I completed my first (and, so far, only!) triathlon in 2 hours, 55 minutes and

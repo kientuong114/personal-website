@@ -1,0 +1,57 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import LinkList from "./LinkList.astro";
+
+interface Props {
+  entry: CollectionEntry<"courses">;
+}
+
+const { entry } = Astro.props;
+const { course, role, institution, terms, links } = entry.data;
+
+// Gutter shows the most recent year the course was taught.
+const year = Math.max(...terms.map((t) => t.year));
+
+// "Teaching Assistant · ETH Zurich", omitting whichever is absent.
+const attribution = [role, institution].filter(Boolean).join(" · ");
+
+const hasNotes = Boolean(entry.body?.trim());
+const { Content } = await render(entry);
+---
+
+<li class="entry">
+  <div class="entry__year">{year}</div>
+
+  <div class="entry__body">
+    <h3 class="entry__title">{course}</h3>
+
+    {attribution && <p class="entry__venue">{attribution}</p>}
+
+    <ul class="entry__venues">
+      {
+        terms.map((term) => (
+          <li>
+            {term.url ? (
+              <a
+                href={term.url}
+                rel="noopener"
+              >{`${term.name} ${term.year}`}</a>
+            ) : (
+              `${term.name} ${term.year}`
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <LinkList links={links} label={`Links for ${course}`} />
+
+    {
+      hasNotes && (
+        <div class="prose">
+          <Content />
+        </div>
+      )
+    }
+  </div>
+</li>

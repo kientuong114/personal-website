@@ -1,7 +1,7 @@
 ---
 title: About
 anchor: about
-order: 1
+order: 2
 ---
 
 Before starting my PhD, I completed my Master's degree in Cybersecurity at ETH
