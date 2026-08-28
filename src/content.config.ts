@@ -25,6 +25,8 @@ const publications = defineCollection({
     year: z.number().int().min(1990).max(2100),
     /** Sort key. Approximate is fine — only the ordering matters. */
     date: z.coerce.date(),
+    /** Distinctions, e.g. "Distinguished Paper Award". Rendered inverted. */
+    awards: z.array(z.string()).default([]),
     links: z.array(link).default([]),
     draft: z.boolean().default(false),
   }),

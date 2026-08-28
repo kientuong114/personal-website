@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, authors, venue, year, links } = entry.data;
+const { title, authors, venue, year, awards, links } = entry.data;
 
 const authorsHtml = formatAuthors(authors, SITE.author);
 
@@ -27,6 +27,16 @@ const { Content } = await render(entry);
     <p class="entry__authors" set:html={authorsHtml} />
 
     <p class="entry__venue">{`${venue} ${year}`}</p>
+
+    {
+      awards.length > 0 && (
+        <ul class="entry__awards">
+          {awards.map((award) => (
+            <li class="award">{award}</li>
+          ))}
+        </ul>
+      )
+    }
 
     <LinkList links={links} label={`Links for ${title}`} />
 

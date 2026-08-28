@@ -4,6 +4,8 @@ authors: [Kien Tuong Truong, Noemi Terzo, Kenny Paterson]
 venue: USENIX Security
 year: 2026
 date: 2026-08-12
+awards:
+  - Distinguished Paper Award Runner-Up
 links:
   - { label: ePrint, url: "https://eprint.iacr.org/2026/484" }
 ---
