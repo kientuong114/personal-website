@@ -121,12 +121,12 @@ the hero construction, the background field, and each section's margin mark.
 
 Three things use it:
 
-| Component       | What it draws                                                                                                                                          |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Plot.astro`    | the hero construction; the portrait is CSS-clipped to the same polygon the SVG outlines                                                                |
-| `Field.astro`   | large arcs and registration marks, masked to the outer margins, in two layers that swing by different amounts as you scroll                            |
-| `Lattice.astro` | a node scatter with short-range links — the graph a generative system builds while it runs. Full width, quietened to a third behind the reading column |
-| `Mark.astro`    | a small mark per section, seeded from the section id                                                                                                   |
+| Component       | What it draws                                                                                            |
+| --------------- | -------------------------------------------------------------------------------------------------------- |
+| `Plot.astro`    | the hero construction; the portrait is CSS-clipped to the same polygon the SVG outlines                  |
+| `Field.astro`   | large arcs and registration marks, masked to the outer margins                                           |
+| `Lattice.astro` | a static node scatter with short-range links. Full width, quietened to a third behind the reading column |
+| `Mark.astro`    | a small mark per section, seeded from the section id                                                     |
 
 Nothing runs in the browser — it all renders to static SVG.
 
@@ -137,17 +137,24 @@ there are no fades or slides. All of it lives inside
 `prefers-reduced-motion: no-preference`, and nothing on the page depends on an
 animation to become visible.
 
-| When                | What                                                                                                                                                                                                                                                                                                                                                   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Load                | the hero construction draws itself stroke by stroke, staggered per element, via `pathLength="1"` and `stroke-dashoffset`                                                                                                                                                                                                                               |
-| Ambient             | the hero's two rings counter-rotate on 62s and 90s; each section's dial and each registration cross turns on its own seeded period and direction; the whole lattice glides and rocks on a 26s cycle while its connections hold and drop in ten interleaved groups                                                                                      |
-| Scroll              | section rules draw in from the left, section marks draw, content lifts, the three background layers swing by different amounts (the lattice counter-drifting), and the masthead hairline fills as a reading-progress dimension line. The layers cycle three times across the page, alternating — one pass over a long document is far too slow to feel |
-| Hover               | the inversion wipe on tag links                                                                                                                                                                                                                                                                                                                        |
-| Opening an abstract | its left rule is drawn downward and the text settles                                                                                                                                                                                                                                                                                                   |
+| When                | What                                                                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Load                | the hero construction draws itself stroke by stroke, staggered per element, via `pathLength="1"` and `stroke-dashoffset` |
+| Ambient             | the hero's two rings counter-rotate on 62s and 90s. That is the only thing on the page that moves by itself              |
+| Scroll              | section rules draw in from the left, and the masthead hairline fills as a reading-progress dimension line                |
+| Hover               | the inversion wipe on tag links                                                                                          |
+| Opening an abstract | its left rule is drawn downward and the text settles                                                                     |
 
 The scroll-driven pieces use `animation-timeline: view()` and `scroll()` behind
 `@supports`; where those are unavailable the elements are simply in their
 finished state.
+
+The background — grid, lattice and margin arcs — is **static**. It was animated
+at one point (transforms on SVG groups, opacity on sub-groups), which repainted
+hundreds of vector elements every frame and was badly janky. If you add
+background motion again, animate `opacity` or `transform` on a handful of plain
+elements so it stays on the compositor; never animate an SVG group with many
+children.
 
 > **Do not switch CSS minification back to Lightning CSS.** It folds
 > `animation-timeline` into the `animation` shorthand — `animation: linear both

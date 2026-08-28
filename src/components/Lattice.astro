@@ -1,5 +1,5 @@
 ---
-import { rng, between, lattice } from "../lib/geom";
+import { rng, lattice } from "../lib/geom";
 
 interface Props {
   seed: number;
@@ -11,30 +11,14 @@ const W = 1600;
 const H = 1000;
 const r = rng(seed ^ 0x5eed);
 
-const { nodes, links } = lattice(r, W, H, 110, 205, 140);
-
 /**
- * The lattice pulses in a handful of groups rather than per element.
+ * A node scatter with short-range links, drawn once and never touched again.
  *
- * Animating every link and node individually meant well over a hundred
- * permanently running animations, each a candidate for its own compositor
- * layer — enough that the browser started dropping other animations on the
- * page. Members are handed out round-robin, so each group is spread across
- * the whole field and the result still reads as individual connections
- * coming and going.
+ * This was briefly animated — a transform on the group, opacity on sub-groups
+ * — which meant repainting hundreds of vector elements every frame and was
+ * visibly janky. It stays static.
  */
-const GROUPS = 10;
-
-const cycles = Array.from({ length: GROUPS }, () => ({
-  period: `${between(r, 16, 38).toFixed(1)}s`,
-  delay: `-${between(r, 0, 38).toFixed(1)}s`,
-}));
-
-const groups = cycles.map((cycle, g) => ({
-  ...cycle,
-  links: links.filter((_, i) => i % GROUPS === g),
-  nodes: nodes.filter((_, i) => i % GROUPS === g),
-}));
+const { nodes, links } = lattice(r, W, H, 40, 235, 46);
 ---
 
 <svg
@@ -44,29 +28,10 @@ const groups = cycles.map((cycle, g) => ({
   aria-hidden="true"
   focusable="false"
 >
-  <g class="lattice__drift">
-    <g class="lattice__float">
-      {
-        groups.map((group) => (
-          <g
-            class="lattice__pulse"
-            style={`--period:${group.period}; --delay:${group.delay}`}
-          >
-            {group.links.map((l) => (
-              <line
-                x1={l.x1}
-                y1={l.y1}
-                x2={l.x2}
-                y2={l.y2}
-                class="lattice__link"
-              />
-            ))}
-            {group.nodes.map((n) => (
-              <circle cx={n.x} cy={n.y} r="2.4" class="lattice__node" />
-            ))}
-          </g>
-        ))
-      }
-    </g>
-  </g>
+  {
+    links.map((l) => (
+      <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} class="lattice__link" />
+    ))
+  }
+  {nodes.map((n) => <circle cx={n.x} cy={n.y} r="2.2" class="lattice__node" />)}
 </svg>

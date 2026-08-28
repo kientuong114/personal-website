@@ -11,10 +11,8 @@ const W = 1600;
 const H = 1000;
 const r = rng(seed);
 
-// Two sets of very large arcs. The near layer swings further than the far one
-// as the page scrolls, so the margins read as two plates at different depths.
-const far = fieldArcs(r, W, H, 3);
-const near = fieldArcs(r, W, H, 3);
+// A few very large arcs, so only a shallow curve crosses the margin.
+const arcs = fieldArcs(r, W, H, 6);
 
 // One ring parked mostly off-canvas, bottom right.
 const ring = brokenRing(r, W * 0.94, H * 0.86, 420, 6);
@@ -25,11 +23,9 @@ const marks = Array.from({ length: 4 }, (_, i) => ({
   x: (i % 2 === 0 ? between(r, 0.03, 0.11) : between(r, 0.89, 0.97)) * W,
   y: between(r, 0.08, 0.92) * H,
   a: between(r, -8, 8),
-  period: Math.round(between(r, 55, 130)),
-  dir: r() > 0.5 ? "normal" : "reverse",
 }));
 
-/** Staggered draw-on, starting after the hero construction has led. */
+/** Staggered draw-on at load, starting after the hero construction has led. */
 let step = 0;
 const delay = () => `${(900 + step++ * 110 + between(r, 0, 80)).toFixed(0)}ms`;
 ---
@@ -41,53 +37,24 @@ const delay = () => `${(900 + step++ * 110 + between(r, 0, 80)).toFixed(0)}ms`;
   aria-hidden="true"
   focusable="false"
 >
-  <g class="field__drift field__drift--far">
-    {
-      far.map((d) => (
-        <path
-          d={d}
-          pathLength="1"
-          class="field__hair field__draw"
-          style={`--d:${delay()}`}
-        />
-      ))
-    }
-  </g>
-
-  <g class="field__drift field__drift--near">
-    {
-      near.map((d) => (
-        <path
-          d={d}
-          pathLength="1"
-          class="field__hair field__draw"
-          style={`--d:${delay()}`}
-        />
-      ))
-    }
-    {
-      ring.map((d) => (
-        <path
-          d={d}
-          pathLength="1"
-          class="field__hair field__draw"
-          style={`--d:${delay()}`}
-        />
-      ))
-    }
-  </g>
-
+  {
+    [...arcs, ...ring].map((d) => (
+      <path
+        d={d}
+        pathLength="1"
+        class="field__hair field__draw"
+        style={`--d:${delay()}`}
+      />
+    ))
+  }
   {
     marks.map((m) => (
       <g
         class="field__mark"
-        transform={`translate(${m.x.toFixed(1)} ${m.y.toFixed(1)})`}
-        style={`--period:${m.period}s; --dir:${m.dir}`}
+        transform={`translate(${m.x.toFixed(1)} ${m.y.toFixed(1)}) rotate(${m.a.toFixed(1)})`}
       >
-        <g class="field__mark-turn" transform={`rotate(${m.a.toFixed(1)})`}>
-          <line x1="-7" y1="0" x2="7" y2="0" />
-          <line x1="0" y1="-7" x2="0" y2="7" />
-        </g>
+        <line x1="-7" y1="0" x2="7" y2="0" />
+        <line x1="0" y1="-7" x2="0" y2="7" />
       </g>
     ))
   }
