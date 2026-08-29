@@ -71,9 +71,9 @@ const delay = () => `${(step++ * 42 + between(r, 0, 30)).toFixed(0)}ms`;
     <Picture
       src={src}
       formats={["avif", "webp"]}
-      widths={[200, 400]}
-      width={400}
-      sizes="(min-width: 60rem) 200px, 42vw"
+      widths={[200, 400, 600]}
+      width={600}
+      sizes="(min-width: 60rem) 192px, 41vw"
       alt={alt}
       loading="eager"
       decoding="async"

@@ -68,6 +68,10 @@
   --shell: 68rem;
   --rail: 10rem; /* left margin where section labels hang */
   --prose: 34rem; /* reading measure, kept narrow */
+  /* Hero plot. The visible photo is the polygon inside it, almost exactly
+     half this. 24rem is the largest that still leaves the text column at
+     --prose; beyond it the reading measure starts being squeezed. */
+  --plot: 24rem;
   --dash: 15px; /* one period of the dashed rules; see --dash-period */
   --dash-period: 4s; /* one --dash per --dash-period, i.e. 3px/s */
 
@@ -459,7 +463,7 @@ main {
 
 @media (min-width: 60rem) {
   .hero {
-    grid-template-columns: minmax(0, 1fr) 21rem;
+    grid-template-columns: minmax(0, 1fr) var(--plot);
     align-items: start;
     gap: 4rem;
     padding-block: 6rem 7rem;
@@ -533,7 +537,7 @@ main {
 .hero__credit {
   margin-top: 1rem;
   font-family: var(--mono);
-  font-size: 0.625rem;
+  font-size: 0.725rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-70);
@@ -550,7 +554,7 @@ main {
 
 .plot {
   position: relative;
-  width: min(21rem, 78vw);
+  width: min(var(--plot), 82vw);
   aspect-ratio: 1;
 }
 
