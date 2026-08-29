@@ -20,9 +20,11 @@ const byDateDesc = (a: { data: { date: Date } }, b: { data: { date: Date } }) =>
 const latestTerm = (e: { data: { terms: readonly { year: number }[] } }) =>
   Math.max(...e.data.terms.map((t) => t.year));
 
-const courses = (
-  await getCollection("courses", ({ data }) => !data.draft)
-).sort((a, b) => latestTerm(b) - latestTerm(a) || byDateDesc(a, b));
+const taught = (await getCollection("courses", ({ data }) => !data.draft)).sort(
+  (a, b) => latestTerm(b) - latestTerm(a) || byDateDesc(a, b),
+);
+const courses = taught.filter((c) => c.data.kind === "course");
+const extra = taught.filter((c) => c.data.kind === "extra");
 
 const supervision = (
   await getCollection("supervision", ({ data }) => !data.draft)
@@ -40,7 +42,7 @@ const supervision = (
 
     {
       courses.length > 0 && (
-        <ol class="entries" style="margin-top:2.5rem">
+        <ol class="entries" style="margin-top:0.5rem">
           {courses.map((entry) => (
             <Course entry={entry} />
           ))}
@@ -55,6 +57,18 @@ const supervision = (
         <ol class="entries">
           {supervision.map((entry) => (
             <Supervision entry={entry} />
+          ))}
+        </ol>
+      </Section>
+    )
+  }
+
+  {
+    extra.length > 0 && (
+      <Section id="extra" title="Extra">
+        <ol class="entries">
+          {extra.map((entry) => (
+            <Course entry={entry} />
           ))}
         </ol>
       </Section>

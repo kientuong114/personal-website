@@ -132,8 +132,27 @@ date: 2025-06-01 # sort key, and the year in the gutter
 ---
 ```
 
-Either section disappears entirely when it has no entries, so the page is
-fine to ship half-filled.
+Extracurricular things — olympiad training, outreach — go in the same
+`courses` collection with `kind: extra`, which files them under a separate
+Extra heading, the way talks and workshops are split. A term with no season
+omits `name` and shows just the year:
+
+```markdown
+---
+course: CyberChallenge.IT
+kind: extra
+role: Member of the Milan training team
+terms:
+  - year: 2023
+date: 2023-03-01
+links:
+  - label: website
+    url: "https://cyberchallenge.it/"
+---
+```
+
+Any of the three sections disappears entirely when it has no entries, so the
+page is fine to ship half-filled.
 
 ## Editing the prose
 

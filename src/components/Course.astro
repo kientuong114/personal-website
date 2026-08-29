@@ -12,12 +12,16 @@ const { course, role, institution, terms, links } = entry.data;
 // "Teaching Assistant · ETH Zurich", omitting whichever is absent.
 const attribution = [role, institution].filter(Boolean).join(" · ");
 
+/** "Autumn 2025", or just "2023" where the thing has no term. */
+const label = (term: { name?: string; year: number }) =>
+  term.name ? `${term.name} ${term.year}` : String(term.year);
+
 const hasNotes = Boolean(entry.body?.trim());
 const { Content } = await render(entry);
 ---
 
 {
-  /* No year gutter: a course taught over several terms has no single year to
+  /* No year gutter: something taught over several terms has no single year to
     put there, and the terms line already carries them. */
 }
 <li class="entry entry--flush">
@@ -31,12 +35,11 @@ const { Content } = await render(entry);
         terms.map((term) => (
           <li>
             {term.url ? (
-              <a
-                href={term.url}
-                rel="noopener"
-              >{`${term.name} ${term.year}`}</a>
+              <a href={term.url} rel="noopener">
+                {label(term)}
+              </a>
             ) : (
-              `${term.name} ${term.year}`
+              label(term)
             )}
           </li>
         ))

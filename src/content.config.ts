@@ -82,26 +82,32 @@ const service = defineCollection({
 });
 
 /**
- * Courses taught. `terms` works like service venues: several of them on one
- * entry covers a course taught more than once, and each can carry its own url.
+ * Things taught. `terms` works like service venues: several of them on one
+ * entry covers something taught more than once, and each can carry its own
+ * url. `kind` splits the page into the formal courses and the extracurricular
+ * ones, the way talks and workshops are split.
  */
 const courses = defineCollection({
   loader: glob({ base: "./src/content/courses", pattern: "**/*.md" }),
   schema: z.object({
+    /** The course, programme or activity. */
     course: z.string(),
-    /** e.g. "Teaching Assistant", "Head TA", "Guest lecturer". */
+    kind: z.enum(["course", "extra"]).default("course"),
+    /** e.g. "Teaching Assistant", "Head TA", "Member of the training team". */
     role: z.string().optional(),
     institution: z.string().optional(),
     terms: z
       .array(
         z.object({
-          name: z.string(), // "Autumn", "Spring", "Summer term"
+          /** "Autumn", "Spring", … Omit where there is no term, and the
+              year alone is shown. */
+          name: z.string().optional(),
           year: z.number().int().min(1990).max(2100),
           url: z.url({ protocol: /^https?$/ }).optional(),
         }),
       )
       .nonempty(),
-    /** Sort key. Approximate is fine — only the ordering matters. */
+    /** Tiebreaker only; ordering is by the most recent term. */
     date: z.coerce.date(),
     links: z.array(link).default([]),
     draft: z.boolean().default(false),
