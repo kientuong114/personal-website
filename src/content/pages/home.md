@@ -4,7 +4,7 @@ greeting: "Ciao! :) I'm"
 nameNote:
   "(Kien Tuong is the first name, Truong is the family name. Feel free to just
   call me Kien!)"
-photoCredit: "Photo by: Emma Romei"
+photoCredit: "Photo by: Andjela M."
 ---
 
 I am a PhD student in the
